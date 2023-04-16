@@ -15,14 +15,28 @@ void initBackground(Background *B)
 	B->camera.y=288;
 	B->camera.w = 1000;
 	B->camera.h = 800;
-	B->BgImg= IMG_Load("obstacle3.png");
+	B->BgImg= IMG_Load("ob4.png");
 	B->Time = 0 ; //annimation Background
+	B->posanim.x = 50;
+	B->posanim.y = 100;
+	B->numAnnim1 = 0;
+	B->numAnnim2 = 0;
+	
+	B->anim =0;
+	B->posanimFeu[0].x = 100 ; 
+	B->posanimFeu[0].y = 500 ; 
 	int i;
 	char ch[20];
-	for(i=0;i<12;i++)
+	for(i=0;i<6;i++)
 	{
-		sprintf(ch,"Backg/%d.jpg",i+1);
+		sprintf(ch,"anim4/%d.png",i+1);
 		B->anima[i] = IMG_Load(ch);
+	}
+char ch2[20];
+	for(i=0;i<9;i++)
+	{
+		sprintf(ch2,"animFeu/%d.png",i+1);
+		B->animFeu[i] = IMG_Load(ch2);
 	}
 
 	if(SDL_Init(SDL_INIT_AUDIO)==-1)
@@ -43,9 +57,11 @@ void initBackground(Background *B)
 void afficherBack (Background B,SDL_Surface *screen)
 {
 	SDL_BlitSurface(B.BgImg,&(B.camera),screen,&(B.PositionBg));
-	//SDL_BlitSurface(B.anima[B.anim],&B.camera,screen,&(B.PositionBg));
+	SDL_BlitSurface(B.anima[B.numAnnim1],NULL,screen,&(B.posanim));
+	SDL_BlitSurface(B.animFeu[B.numAnnim2],NULL,screen,&(B.posanimFeu[0]));
 }
 
+/*
 void animation(Background *B, SDL_Surface * screen) 
 {
 	B->anim++;
@@ -56,31 +72,78 @@ void animation(Background *B, SDL_Surface * screen)
 	//SDL_Delay(100);
 
 }
+*/
 
-/*
-void animerBackground(Background *e){
+void Animer(Background *e){
   int frame_Speed_Annim1 = 24 ;
   int frame_Speed_Annim2 = 34 ;
   
    Uint32 currentTime = SDL_GetTicks();
   Uint32 elapsedTime = currentTime - e->Time;
   
-  if (elapsedTime >= 1000 / frame_Speed_Annim1 && e->anim < 12) {
+  if (elapsedTime >= 1000 / frame_Speed_Annim1 && e->numAnnim1 < 6) {
         // Update the frame index
-        e->anim++;
+        e->numAnnim1++;
         
         e->Time = currentTime;
+
+		if (e->posanim.x <= 50)
+				e->anim =0;
+			else if (e->posanim.x >= 200)
+				e->anim = 1 ;
+
+				if (e->anim )
+					{
+						e->posanim.x -=5 ;
+						if (e->numAnnim1>=6)
+							e->numAnnim1 = 3 ; 
+					} 
+					else 
+					{
+						e->posanim.x +=5 ;
+						if (e->numAnnim1>=3)
+							e->numAnnim1 = 0 ; 
+							
+					} 
+		
+    }
+
+	  if (elapsedTime >= 1000 / frame_Speed_Annim1 && e->numAnnim2 < 10) {
+        // Update the frame index
+        e->numAnnim2++;
+        
+        e->Time = currentTime;
+
+		if (e->numAnnim2>=9)
+			e->numAnnim2 = 0 ; 
+		
     }
     
-    if (e->anim >= 12) {
-        
-        e->numAnnim1 = 0;
-    }
+    
      
   
  
 }
-*/
+
+
+void animerBackground(Background *e , Perso P){
+	Animer(e);
+if(P.derec==1)
+	{
+		printf("\n pos Feu = %d",e->posanimFeu[0].x);
+		e->posanimFeu[0].x -= ((int)((P.distance)) +5);
+	}
+	else if (P.derec==2){
+		e->posanimFeu[0].x += ((int)((P.distance)) +5);
+	}
+
+	if (e->posanimFeu[0].x<=0)
+	{
+		e->posanimFeu[0].x = e->camera.w +100 ; 
+	}
+	
+}
+
 
 
 
@@ -160,7 +223,7 @@ void scrolling(Background *B, input *in)
 		}
 	}
 	if(in->up==1)
-	{	B->camera.y-=20;
+	{	B->camera.y-=30;
 		if (B-> camera.y <= 0)
 		{
 			B->camera.y=0;
@@ -189,8 +252,12 @@ void freeBackground(Background *B)
 {
     SDL_FreeSurface(B->BgImg);
     Mix_FreeMusic(B->music);
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 6; i++) {
         SDL_FreeSurface(B->anima[i]);
+    }
+
+	for (int i = 0; i < 9; i++) {
+        SDL_FreeSurface(B->animFeu[i]);
     }
     Mix_CloseAudio();
     SDL_Quit();
@@ -200,13 +267,19 @@ void freeBackground(Background *B)
 void scrollingInt(Background *B, Perso P   )
 {
 	if(P.jumt==1)
-	B->camera.y=0.04*(P.i)*(P.i)-100+288;
+	B->camera.y=0.06*(P.i)*(P.i)-150+288;
 
 	if(P.derec==1){
-        B->camera.x+=((int)((P.distance)) +5);
+		if(P.jumt==1)
+        B->camera.x+=((int)((P.distance)) +10);
+
+		B->camera.x+=((int)((P.distance)) +5);
 		//e->pos_entite.x -=10 ; 
     }
     else if(P.derec==2){
+		if(P.jumt==1)
+		B->camera.x-=((int)((P.distance))+7);
+
         B->camera.x-=((int)((P.distance))+5);
     }
 	

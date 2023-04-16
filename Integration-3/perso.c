@@ -4,16 +4,18 @@
 
 
 void initPerso(Perso *P){
-    P->img.img=IMG_Load("robotrouge_jump_run.png");
+    P->img.img=IMG_Load("testcar.png");
 
-    P->img.pos1.x=0;
-    P->img.pos1.y=480;
+    P->img.pos1.x=300;
+    P->img.pos1.y=520;
 
     P->img.pos2.x=P->img.img->w;
     P->img.pos2.y=P->img.img->h/2;
     P->img.pos2.w=P->img.img->w/11;
     P->img.pos2.h=P->img.img->h/4 ;
 
+    P->jumt = 0 ; 
+    P->i = 0;
     P->count=0;
     P->derec=0;
     P->speed=0.1;
@@ -23,7 +25,8 @@ void initPerso(Perso *P){
 }
 
 void afficherPerso(Perso P,SDL_Surface* screen){
-    SDL_BlitSurface(P.img.img,&P.img.pos2,screen,&P.img.pos1);
+    //SDL_BlitSurface(P.img.img,&P.img.pos2,screen,&P.img.pos1);
+    SDL_BlitSurface(P.img.img,NULL,screen,&P.img.pos1);
 }
 
 void deplacerPerso(Perso *P,int dt){
@@ -38,21 +41,22 @@ void deplacerPerso(Perso *P,int dt){
 
 void animePerso(Perso *P){
     P->count++;
-    if(P->count>=100){
+    if(P->count>=400){
         P->count=0;
+        //printf("\n nbimage = %d ",P->img.pos2.x/(P->img.img->w/11));
         if(P->derec==1){
             P->img.pos2.y=P->img.img->h/4 ;
             P->img.pos2.x-=P->img.img->w/11;
             
-            if(P->img.pos2.x<=P->img.img->w/11)
-                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 3 ;
+            if(P->img.pos2.x<=0)
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11)  ;
         }
         else if(P->derec==2){
             P->img.pos2.y=0;
             P->img.pos2.x-=P->img.img->w/11;
             
-            if(P->img.pos2.x<=P->img.img->w/11)
-                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) *3;
+            if(P->img.pos2.x<=0)
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) ;
         }
         else if(P->acc==0){
             P->img.pos2.x=P->img.img->w - P->img.img->w/11;
@@ -85,8 +89,9 @@ void saut(Perso *P){
     // ax²+b
     // b=-100+
     //-50----->>>50
-    P->i+=10;
+    P->i+=5;
     P->img.pos1.y=0.04*(P->i)*(P->i)-100+P->y;
+    
     P->acc=0.2;
     if(P->i>=50){
         P->jumt=0;
@@ -118,10 +123,15 @@ switch ( event )
     break ; 
 
     case 3 : //SDLK_SPACE
+    if (P->jumt == 0)
+    {
         P->jumt=1;
-        P->i=-60;
-        P->y=P->img.pos1.y;
+        P->i=-50;
+       P->y=P->img.pos1.y;
+       
         P->img.pos2.x=P->img.img->w - ( P->img.img->w/11 )* 5 ; 
+    }
+        
     break ; 
 
     case 4 : 
@@ -137,6 +147,7 @@ switch ( event )
   void UpdatePerso   (Perso* P)
   {
        if(P->jumt){
+        
                 saut(P);
             }
             if(P->acc>0&&P->jumt==0)

@@ -99,9 +99,14 @@ int main()
             end=start;
             if (start > 100000 ) 
             	start = end = 0 ; 
+            
+            update_entite(&e,&personnage);
             deplacerPerso(&personnage,5); 
             scrollingInt(&B,personnage);
             mvt_entiteInt(&e,&personnage);
+            animerBackground(&B,personnage);
+            
+            //
             //printf("\ncontinuer= %d",continuer);
         }
         
@@ -111,10 +116,13 @@ int main()
         MAJMinimap(personnage.img.pos1,  &m, B.camera, 20);
 
         if (collisionparfaite(screen,personnage) != 10)
-            printf("\nhello");
+        {
 
-        update_entite(&e,&personnage);
+        }
+            //printf("\nhello");
+            
         //collision(screen,&personnage);
+        
         //animation(&B,screen);
         
         SDL_Flip(screen);

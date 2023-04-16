@@ -15,10 +15,14 @@ typedef struct
 	SDL_Rect camera;
 	Mix_Music *music; 
 	int anim;
-	SDL_Surface *anima[50]; 
+	SDL_Surface *anima[10]; 
+	SDL_Surface *animFeu[15]; 
+	SDL_Rect posanimFeu[10];
 	SDL_Rect posanim ;
 	
 	int Time ; 
+	int numAnnim1;
+	int numAnnim2;
 }Background;
 
 typedef struct 
@@ -36,7 +40,8 @@ typedef struct
 void initBackground(Background *B);
 void afficherBack(Background B, SDL_Surface * screen);
 void animation (Background *B,SDL_Surface * screen) ;
-void animerBackground(Background *e);
+void Animer(Background *e);
+void animerBackground(Background *e , Perso p );
 void getinput(input *in,int run);
 void getInput(input *in, int dirrection );///Integration
 void scrolling(Background *B, input *in);

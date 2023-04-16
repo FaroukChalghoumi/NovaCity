@@ -11,7 +11,7 @@ void init_map (minimap *m)
   m->positionminijoueur.x =250;
   m->positionminijoueur.y =100;
 
-  m->collisionPP=IMG_Load("car.png");
+  m->collisionPP=IMG_Load("ob.png");
   m->PoscollisionPP.x = 0; 
   m->PoscollisionPP.y = 0 ;
 
@@ -32,7 +32,7 @@ void MAJMinimap(SDL_Rect posJoueur,  minimap *m, SDL_Rect camera, int redimensio
 void afficherminimap (minimap m, SDL_Surface * screen)
 {
   SDL_BlitSurface(m.map,NULL,screen,&m.positionmap);
-  SDL_BlitSurface(m.collisionPP, NULL, screen , &m.PoscollisionPP );
+  //SDL_BlitSurface(m.collisionPP, NULL, screen , &m.PoscollisionPP );
   SDL_BlitSurface(m.minijoueur,NULL,screen,&m.positionminijoueur);
 	
 }
@@ -47,7 +47,7 @@ SDL_Color couleur = {0,0,0};
 int min=0,sec=0;
 char texteChrono [10] = "";
 
-positionChrono.x = 250;
+positionChrono.x = 40;
 positionChrono.y = 50;
 (*temps)=SDL_GetTicks();
 (*temps)/=1000;
@@ -76,36 +76,40 @@ SDL_Color getpixel(SDL_Surface *pSurface, int x, int y)
 int collisionparfaite(SDL_Surface *psurface, Perso p)
 {
 	int tabx[7], taby[7], i;
-	SDL_Color color1, color;
+	SDL_Color color1, color , color2;
 
-	color1.r = 237; // RED 
-	color1.g = 37; // GREEN
-	color1.b = 33; // BLUE
+	color1.r = 32; // RED 
+	color1.g = 35; // GREEN
+	color1.b = 38; // BLUE
+
+	color2.r = 238; // RED 
+	color2.g = 33; // GREEN
+	color2.b = 37; // BLUE
 	
 	//capteur 1 : 
-	tabx[0] = p.img.pos1.x;
-	taby[0] = p.img.pos1.y;
+	tabx[0] = p.img.pos1.x -20;
+	taby[0] = p.img.pos1.y -20;
 
 	//capteur 2 : 
-	tabx[1] = (p.img.pos1.x) + ((p.img.pos2.w) / 2);
-	taby[1] = p.img.pos1.y;
+	tabx[1] = (p.img.pos1.x) + ((p.img.pos2.w) / 2) -20;
+	taby[1] = p.img.pos1.y-20;
 
-	tabx[2] = (p.img.pos1.x + p.img.pos2.w);
-	taby[2] = p.img.pos1.y;
+	tabx[2] = (p.img.pos1.x + p.img.pos2.w)-20;
+	taby[2] = p.img.pos1.y-20;
 
-	tabx[3] = p.img.pos1.x;
-	taby[3] = (p.img.pos1.y) + ((p.img.pos2.h) / 2);
+	tabx[3] = p.img.pos1.x-20;
+	taby[3] = (p.img.pos1.y) + ((p.img.pos2.h) / 2) -20;
 
 	tabx[4] = p.img.pos1.x;
-	taby[4] = (p.img.pos1.y + p.img.pos2.h);
+	taby[4] = (p.img.pos1.y + p.img.pos2.h)-20;
 
 	tabx[5] = (p.img.pos1.x) + ((p.img.pos2.w) / 2);
-	taby[5] = (p.img.pos1.y + p.img.pos2.h);
+	taby[5] = (p.img.pos1.y + p.img.pos2.h)-20;
 
-	tabx[6] = (p.img.pos1.x + p.img.pos2.w);
+	tabx[6] = (p.img.pos1.x + p.img.pos2.w)-20;
 	taby[6] = (p.img.pos1.y + p.img.pos2.h);
 
-	tabx[7] = (p.img.pos1.x + p.img.pos2.w);
+	tabx[7] = (p.img.pos1.x + p.img.pos2.w)-20;
 	taby[7] = (p.img.pos1.y) + ((p.img.pos2.h) / 2);
 	
 	
@@ -119,10 +123,13 @@ int collisionparfaite(SDL_Surface *psurface, Perso p)
 	for (i = 0; i < 8; i++)
 	{
 		color = getpixel(psurface, tabx[i], taby[i]);
-		//printf("red = %d , green = %d , blue = %d" ,color.r,color.b,color.g);
-		if (color.r == color1.r && color.b == color1.b && color.g == color1.g)
+		//printf("\n tab [%d] = red = %d , green = %d , blue = %d" ,i,color.r,color.g,color.b);
+		
+		if ((color.r == color1.r && color.b == color1.b && color.g == color1.g ) 
+				|| (color.r == color2.r && color.b == color2.b && color.g == color2.g ) )
 		{
-			printf("\nhello");
+			//printf("\n tab [%d] = red = %d , green = %d , blue = %d" ,i,color.r,color.g,color.b);
+			//printf("\nhello");
 			return i;
 		}
 	}
@@ -133,33 +140,41 @@ void collision(SDL_Surface *psurface, Perso *p)
 {
 	int i;
 	i = collisionparfaite(psurface, *p);
+	//printf("\n colision = %d",i);
 
 	switch (i)
 	{
 	case 0:
-		p->img.pos1.y = p->img.pos1.y + 10;
+		p->img.pos1.y = p->img.pos1.y + 5;
 		break;
 	case 1:
-		p->img.pos1.y = p->img.pos1.y + 10;
+		p->img.pos1.y = p->img.pos1.y + 5;
 		break;
 	case 2:
-		p->img.pos1.y = p->img.pos1.y + 10;
+		p->img.pos1.y = p->img.pos1.y + 5;
 		break;
 	case 3:
-		p->img.pos1.x = p->img.pos1.x + 10;
+		p->img.pos1.x = p->img.pos1.x + 5;
 		break;
 	case 4:
-		p->img.pos1.y = p->img.pos1.y - 10;
+		p->img.pos1.y = p->img.pos1.y - 5;
 		break;
 	case 5:
+		//p->img.pos1.y = p->img.pos1.y - 5;
 		p->img.pos1.y = p->img.pos1.y - 10;
 		break;
 	case 6:
-		p->img.pos1.y = p->img.pos1.y - 10;
+		p->img.pos1.x = p->img.pos1.x - 5;
+		
 		break;
 	case 7:
-		p->img.pos1.x = p->img.pos1.x - 10;
+		p->img.pos1.x = p->img.pos1.x - 5;
 		break;
+
+		case 10 : 
+			//p->img.pos1.x=300;
+    		p->img.pos1.y=450;
+			break;
 	}
 }
 

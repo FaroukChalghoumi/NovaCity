@@ -30,7 +30,7 @@ void affichertemp (int *temps,SDL_Surface *screen,TTF_Font *police);
 void liberer(minimap *m);
 
 SDL_Color getpixel(SDL_Surface *pSurface, int x, int y);
-int collisionparfaite(SDL_Surface *psurface, Perso p);
+int collisionparfaite(SDL_Surface *psurface, Perso p );
 void collision(SDL_Surface *psurface, Perso *p);
 
 #endif
