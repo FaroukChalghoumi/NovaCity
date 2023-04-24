@@ -78,3 +78,64 @@ void saut(Perso *P){
     }
 }
 
+
+
+void MajPerso (Perso P , SDL_Event event , int *end )
+{
+int start=0,dt;
+start=SDL_GetTicks();
+        dt=start- *(end);
+        if(dt>60){
+    switch (event.type)
+                    {
+                    case SDL_KEYDOWN:
+                        if(event.key.keysym.sym==SDLK_RIGHT){
+                            P.desacceleration=0;
+                            P.acc+=0.008;
+                            if(P.acc>=0.1)
+                                P.acc=0.1;
+                            P.derec=1;
+
+                        }
+                        else if(event.key.keysym.sym==SDLK_LEFT){
+                            P.desacceleration=0;
+                            P.acc+=0.008;
+                            if(P.acc>=0.1)
+                                P.acc=0.1;
+                            P.derec=2;
+                        }
+                        else if(event.key.keysym.sym==SDLK_SPACE){
+                            P.jumt=1;
+                            P.i=-60;
+                            P.y=P.img.pos1.y;
+
+                            //Mix_PlayChannel(0,jump,0);
+                        }
+                        break;
+
+                    case SDL_KEYUP:
+                        if(event.key.keysym.sym==SDLK_RIGHT){
+                            P.desacceleration=1;
+                        }
+                        else if(event.key.keysym.sym==SDLK_LEFT){
+                            P.desacceleration=1;
+                        }
+                        break;
+                    }
+                if(P.jumt){
+                    saut(&P);
+                }
+                if(P.acc>0&&P.jumt==0)
+                    //Mix_PlayChannel(0,footSteps,0);
+                if(P.desacceleration)
+                    P.acc-=0.01;
+                if(P.acc<=0){
+                    P.acc=0;
+                    P.desacceleration=0;
+                    P.derec=0;
+                }
+                   
+            }
+             *(end)=start;
+    }
+

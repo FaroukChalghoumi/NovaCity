@@ -1,5 +1,5 @@
-#ifndef UNTITLED_INIGMETXT_TXT_H
-#define UNTITLED_INIGMETXT_TXT_H
+#ifndef PERSO_H
+#define PERSO_H
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
@@ -31,5 +31,7 @@ void afficherPerso(Perso P,SDL_Surface* screen);
 void animePerso(Perso *P);
 void deplacerPerso(Perso *P,int dt);
 void saut(Perso *P);
+//Integration 
+void MajPerso (Perso P , SDL_Event event , int *end);
 
 #endif

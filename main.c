@@ -1,103 +1,155 @@
-#include <string.h>
-#include <stdlib.h>
+#include <SDL/SDL_ttf.h>
 #include <stdio.h>
-#include <stdarg.h>
+#include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_mixer.h>
-#include "perso.h"
+#include "minimap.h"
+#include <time.h>
 
-int main(int argc , char *argv[]){
-    SDL_Init(SDL_INIT_EVERYTHING);
-    TTF_Init();
-    Mix_OpenAudio(44100,MIX_DEFAULT_FORMAT,2,4096);
+int main()
+{
 
+//joueur j;
 
-    SDL_Surface* window;
-    window=SDL_SetVideoMode(1200,700,32,SDL_HWSURFACE | SDL_DOUBLEBUF);
+//SDL init 
+SDL_Init(SDL_INIT_VIDEO);
+TTF_Init();
 
-    int run=1;
-    SDL_Event event;
-    Perso P;
-    initPerso(&P);
-    int i=0;
-
-    IMAGE bk;
-    bk.img=IMG_Load("background.png");
+//Police Init 
+TTF_Font *police=NULL;
+SDL_Color Color={255,255,255};
+police=TTF_OpenFont("pol.ttf",50);
 
 
-    Mix_Chunk *footSteps,*jump;
-    footSteps=Mix_LoadWAV("footstep.wav");
-    jump=Mix_LoadWAV("jump.m4a");
 
-    int start=0,end=0,dt;
+//Init personnage TESTING ... 
+Perso personnage ; 
+initPerso(&personnage);
 
-    while(run){
-        SDL_PollEvent(&event);
-        start=SDL_GetTicks();
-        dt=start-end;
-        if(dt>60){
-        SDL_BlitSurface(bk.img,NULL,window,NULL);
-        afficherPerso(P,window);
-        deplacerPerso(&P,10);
-        animePerso(&P);
+// Init Fenetre 
+SDL_Surface *screen ;
+screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
-                switch (event.type)
+
+SDL_Event event;
+
+// Init MINIMAP 
+minimap m;
+SDL_Rect camera,backgpos;
+int temps;
+init_map(&m);
+
+
+/////////////////////////////////////////////
+//Init Background  & perso for TESTING ...
+//perso=IMG_Load("hero.png");
+ SDL_Surface *back;
+back=IMG_Load("backg.png");
+camera.x=0;
+camera.y=0;
+camera.w=1300;
+camera.h=700;
+//posperso.x=0;
+//posperso.y=400;
+backgpos.x=0;
+backgpos.y=0;
+///////////////////////////////////////////
+
+
+int continuer=1;
+int time = 0 ; 
+
+
+
+
+
+SDL_EnableKeyRepeat(100,10);
+
+while(continuer)
+{
+
+SDL_BlitSurface(back,NULL,screen,&backgpos);
+afficherminimap(m,screen);
+annimerminimap (&m  );
+afficherPerso(personnage,screen);
+affichertemp(&temps,screen,police);
+
+
+
+
+
+SDL_PollEvent(&event);
+
+//MajPerso(personnage , event , &time  );
+switch (event.type)
+            {
+                
+            case SDL_QUIT:
+                continuer = 0;
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
                 {
-                case SDL_KEYDOWN:
-                    if(event.key.keysym.sym==SDLK_RIGHT){
-                        P.desacceleration=0;
-                        P.acc+=0.008;
-                        if(P.acc>=0.1)
-                            P.acc=0.1;
-                        P.derec=1;
+                case SDLK_ESCAPE:
+                    continuer = 0;
+                    break;
+                 case SDLK_RIGHT:
+                    //m.positionminijoueur.x+=10;
+                    
+                            personnage.desacceleration=0;
+                            personnage.acc+=0.008;
+                            if(personnage.acc>=0.1)
+                                personnage.acc=0.1;
+                            personnage.derec=1;
+                    deplacerPerso(&personnage,10);
+                    
+                    
+                    break;
+                    
+                    case SDLK_LEFT:
+                    //m.positionminijoueur.x-=10;
+                    
+                        personnage.desacceleration=0;
+                        personnage.acc+=0.008;
+                            if(personnage.acc>=0.1)
+                                personnage.acc=0.1;
+                        personnage.derec=2;
+                        deplacerPerso(&personnage,10);
 
-                    }
-                    else if(event.key.keysym.sym==SDLK_LEFT){
-                        P.desacceleration=0;
-                        P.acc+=0.008;
-                        if(P.acc>=0.1)
-                            P.acc=0.1;
-                        P.derec=2;
-                    }
-                    else if(event.key.keysym.sym==SDLK_SPACE){
-                        P.jumt=1;
-                        P.i=-60;
-                        P.y=P.img.pos1.y;
-
-                        Mix_PlayChannel(0,jump,0);
-                    }
+                    
+                    
                     break;
 
-                case SDL_KEYUP:
-                    if(event.key.keysym.sym==SDLK_RIGHT){
-                        P.desacceleration=1;
-                    }
-                    else if(event.key.keysym.sym==SDLK_LEFT){
-                        P.desacceleration=1;
-                    }
+                    
+                    
                     break;
+                 
+               
                 }
-            if(P.jumt){
-                saut(&P);
-            }
-            if(P.acc>0&&P.jumt==0)
-                Mix_PlayChannel(0,footSteps,0);
-            if(P.desacceleration)
-                P.acc-=0.01;
-            if(P.acc<=0){
-                P.acc=0;
-                P.desacceleration=0;
-                P.derec=0;
-            }
-                end=start;
-        }
+                break;
+                
+             }
 
 
-    if(event.type==SDL_QUIT)
-                    run=0;
-                SDL_Flip(window);
-    }
+
+
+
+
+animePerso(&personnage);
+
+MAJMinimap(personnage.img.pos1,  &m, camera, 20);
+
+collision(screen,&personnage);
+
+SDL_Flip(screen);
+
+
+}
+liberer(&m);
     return 0;
 }
+
+
+
+
+
