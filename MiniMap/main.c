@@ -70,6 +70,7 @@ while(continuer)
 
 SDL_BlitSurface(back,NULL,screen,&backgpos);
 afficherminimap(m,screen);
+annimerminimap (&m  );
 afficherPerso(personnage,screen);
 affichertemp(&temps,screen,police);
 
