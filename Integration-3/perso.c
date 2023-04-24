@@ -4,10 +4,10 @@
 
 
 void initPerso(Perso *P){
-    P->img.img=IMG_Load("testcar.png");
+    P->img.img=IMG_Load("spritedheet_150.png");
 
     P->img.pos1.x=300;
-    P->img.pos1.y=520;
+    P->img.pos1.y=480;
 
     P->img.pos2.x=P->img.img->w;
     P->img.pos2.y=P->img.img->h/2;
@@ -25,8 +25,8 @@ void initPerso(Perso *P){
 }
 
 void afficherPerso(Perso P,SDL_Surface* screen){
-    //SDL_BlitSurface(P.img.img,&P.img.pos2,screen,&P.img.pos1);
-    SDL_BlitSurface(P.img.img,NULL,screen,&P.img.pos1);
+    SDL_BlitSurface(P.img.img,&P.img.pos2,screen,&P.img.pos1);
+    //SDL_BlitSurface(P.img.img,NULL,screen,&P.img.pos1);
 }
 
 void deplacerPerso(Perso *P,int dt){

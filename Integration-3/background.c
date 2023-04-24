@@ -128,17 +128,22 @@ void Animer(Background *e){
 
 void animerBackground(Background *e , Perso P){
 	Animer(e);
+	printf("\n pos Feu = %d",e->posanimFeu[0].y);
+	if(P.jumt==1)
+	e->posanimFeu[0].y+=(P.i)*(P.i)/900;
 if(P.derec==1)
 	{
-		printf("\n pos Feu = %d",e->posanimFeu[0].x);
+		e->posanimFeu[0].y = 500 ; 
 		e->posanimFeu[0].x -= ((int)((P.distance)) +5);
 	}
 	else if (P.derec==2){
+		e->posanimFeu[0].y = 500 ; 
 		e->posanimFeu[0].x += ((int)((P.distance)) +5);
 	}
 
 	if (e->posanimFeu[0].x<=0)
 	{
+		e->posanimFeu[0].y = 500 ; 
 		e->posanimFeu[0].x = e->camera.w +100 ; 
 	}
 	

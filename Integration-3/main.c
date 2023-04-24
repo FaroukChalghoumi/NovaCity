@@ -55,9 +55,10 @@ int main()
         if(dt>60){
         //AFFICHAGE 
         afficherBack (B,screen);
-        afficherminimap(m,screen);
+        afficherminimap(m,screen , B.camera);
+        annimerminimap (&m  );
         afficherPerso(personnage,screen);
-        afficher_entite(&e ,screen);
+        //afficher_entite(&e ,screen);
         affichertemp(&temps,screen,police);
         
         

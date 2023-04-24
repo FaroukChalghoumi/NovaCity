@@ -3,17 +3,29 @@
 
 void init_map (minimap *m)
 { 
-	m -> map = IMG_Load("minimap2.png");
-	m->positionmap.x =250;
-  	m->positionmap.y =115;
+	m -> map = IMG_Load("minimap.png");
+	m->positionmap.x =350;
+  	m->positionmap.y =80;
+
+
+
   
   m-> minijoueur = IMG_Load("playermap.png");
   m->positionminijoueur.x =250;
   m->positionminijoueur.y =100;
 
-  m->collisionPP=IMG_Load("ob.png");
-  m->PoscollisionPP.x = 0; 
-  m->PoscollisionPP.y = 0 ;
+ //annimation 1 MiniMap
+  char ch2[20];
+  int i ; 
+	for(i=0;i<6;i++)
+	{
+		sprintf(ch2,"Cadre/cadre%d.png",i+1);
+		m->animMiniMap1[i] = IMG_Load(ch2);
+	}
+m->PosanimMiniMap1.x = 347 ;
+m->PosanimMiniMap1.y = 70 ; 
+  m->GloablFrame = 0;
+  m->numCadre = 0 ; 
 
 }
 
@@ -29,11 +41,36 @@ void MAJMinimap(SDL_Rect posJoueur,  minimap *m, SDL_Rect camera, int redimensio
 }
 
 
-void afficherminimap (minimap m, SDL_Surface * screen)
+void afficherminimap (minimap m, SDL_Surface * screen , SDL_Rect camera)
 {
-  SDL_BlitSurface(m.map,NULL,screen,&m.positionmap);
-  //SDL_BlitSurface(m.collisionPP, NULL, screen , &m.PoscollisionPP );
+	SDL_Rect scroll ; 
+	scroll.w = 470 ;
+	scroll.h = 125  ; 
+	scroll.x = camera.x /17 ; 
+	scroll.y = camera.y /17 ; 
+  SDL_BlitSurface(m.map,&scroll,screen,&m.positionmap);
+  SDL_BlitSurface(m.animMiniMap1[m.numCadre], NULL, screen , &m.PosanimMiniMap1 );
   SDL_BlitSurface(m.minijoueur,NULL,screen,&m.positionminijoueur);
+	
+}
+
+
+void annimerminimap (minimap *m  )
+{
+	int frame_Speed_Annim1 = 10 ;
+	Uint32 currentTime = SDL_GetTicks();
+  Uint32 elapsedTime = currentTime - m->GloablFrame ;
+
+  if (elapsedTime >= 1000 / frame_Speed_Annim1 && m->numCadre < 5)
+  {
+	m->numCadre++; 
+	m->GloablFrame = currentTime;
+  }
+
+  if (m->numCadre >= 5) {
+        
+        m->numCadre = 0;
+    }
 	
 }
 
