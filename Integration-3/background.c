@@ -128,7 +128,7 @@ void Animer(Background *e){
 
 void animerBackground(Background *e , Perso P){
 	Animer(e);
-	printf("\n pos Feu = %d",e->posanimFeu[0].y);
+	//printf("\n pos Feu = %d",e->posanimFeu[0].y);
 	if(P.jumt==1)
 	e->posanimFeu[0].y+=(P.i)*(P.i)/900;
 if(P.derec==1)

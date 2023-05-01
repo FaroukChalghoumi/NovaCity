@@ -4,10 +4,10 @@
 
 
 void initPerso(Perso *P){
-    P->img.img=IMG_Load("spritedheet_150.png");
+    P->img.img=IMG_Load("spritesheet_car.png");
 
     P->img.pos1.x=300;
-    P->img.pos1.y=480;
+    P->img.pos1.y=520;
 
     P->img.pos2.x=P->img.img->w;
     P->img.pos2.y=P->img.img->h/2;
