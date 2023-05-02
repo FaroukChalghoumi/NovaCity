@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     menu m ;
     InitAnimationMenu(&m);
 int AnimFinished = 0 ;
-
+int arduino = 0 ; 
 // Game loop
     SDL_Event event;
     int running = 1;
@@ -33,6 +33,14 @@ int AnimFinished = 0 ;
        {
         freeAnimationNova(&m) ;
         Animation(screen, &m);
+        arduinoReadData(&arduino);
+if  (arduino != 0)
+{
+    if (arduino == 1)
+    {
+        singleMulti.MouseMotion ==1;
+    }
+}
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = 0;
