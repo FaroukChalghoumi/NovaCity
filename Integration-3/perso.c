@@ -69,7 +69,7 @@ void animePerso(Perso *P){
                 P->img.pos2.x-=P->img.img->w/11;
 
                 if(P->img.pos2.x<=P->img.img->w/11)
-                P->img.pos2.x=P->img.img->w - (P->img.img->w/10) * 3 ;
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 9 ;
         }
 
         else if(P->derec==2){
@@ -77,7 +77,7 @@ void animePerso(Perso *P){
                 P->img.pos2.x-=P->img.img->w/11;
 
                 if(P->img.pos2.x<=P->img.img->w/11)
-                P->img.pos2.x=P->img.img->w - (P->img.img->w/10) * 3 ;
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 9;
         }
 
     }
@@ -129,7 +129,7 @@ switch ( event )
         P->i=-50;
        P->y=P->img.pos1.y;
        
-        P->img.pos2.x=P->img.img->w - ( P->img.img->w/11 )* 5 ; 
+        P->img.pos2.x=0; 
     }
         
     break ; 
