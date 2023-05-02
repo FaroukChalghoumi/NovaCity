@@ -73,10 +73,12 @@ typedef struct
 typedef struct 
 {
     //annimation 
-    SDL_Surface* AnimationMenu[20];
+    SDL_Surface* AnimationMenu[150];
+    SDL_Surface* AnimationNova[20];
     SDL_Rect PosAnimationMenu;
     int FrameNumber;
     int Time;
+    int Reverse ; 
 
     int menuPlay ; 
     int settings;
@@ -105,13 +107,14 @@ void HandleMouseMotion(SDL_Event event, Play *playGame);
 void HandleMouseMotionSingleMulti(SDL_Event event, SingleMulti *singleMultiPlayer);
 
 
-void Animation(menu *m);
+void Animation(SDL_Surface* screen, menu* m);
 
 
 
 void FreePlay(Play* playGame) ;
 void FreeSingleMulti(SingleMulti *SingleMultiplayer);
 void freeAnimation(menu* m) ;
+void freeAnimationNova(menu* m) ;
 
 
 

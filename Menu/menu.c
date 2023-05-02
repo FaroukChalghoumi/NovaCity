@@ -5,11 +5,28 @@ void InitAnimationMenu(menu *m)
 	m->PosAnimationMenu.x = 0 ; 
 	m->PosAnimationMenu.y = 0 ; 
 	int i;
-	char ch[20];
+	char ch[200];
 	for(i=0;i<19;i++)
 	{
 		sprintf(ch,"animNova/%d.jpg",i+1);
+		m->AnimationNova[i] = IMG_Load(ch);
+        if (m->AnimationNova[i]  == NULL) {
+        printf("Failed to load image %d .\n",i+1);
+        exit(1);}
+	}
+	for(i=0;i<140;i++)
+	{
+        if (i<9)
+		sprintf(ch,"Meta/ezgif-frame-00%d.png",i+1);
+        else if (i>=9 && i<99)
+        sprintf(ch,"Meta/ezgif-frame-0%d.png",i+1);
+        else if (i>=99)
+        sprintf(ch,"Meta/ezgif-frame-%d.png",i+1);
 		m->AnimationMenu[i] = IMG_Load(ch);
+        if (m->AnimationMenu[i]  == NULL) {
+        printf("Failed to load image %d .\n",i+1);
+        exit(1);
+    }
 	}
     m->game = m->menuPlay = m->settings = m->SingleMulti = m->NewLoad = 0;
     m->Time = 0 ; 
@@ -204,10 +221,10 @@ void InitSingleMulti(SingleMulti *SingleMultiplayer) {
     SingleMultiplayer->PosSingleMultiBackground.x = 0;
     SingleMultiplayer->PosSingleMultiBackground.y = 0;
 
-    SingleMultiplayer->PosButtonSingle.x = 200;
+    SingleMultiplayer->PosButtonSingle.x = 500;
     SingleMultiplayer->PosButtonSingle.y = 200;
 
-    SingleMultiplayer->PosButtonMulti.x = 200;
+    SingleMultiplayer->PosButtonMulti.x = 500;
     SingleMultiplayer->PosButtonMulti.y = 400;
 }
 
@@ -242,7 +259,7 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
     // Blit images onto the screen surface
     if (SingleMultiplayer.MouseMotion == 0)
     {
-        SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
+        //SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
 
         SDL_BlitSurface(SingleMultiplayer.ButtonSingle, NULL, screen, &SingleMultiplayer.PosButtonSingle);
 
@@ -250,7 +267,7 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
     }
     else if (SingleMultiplayer.MouseMotion == 1)
     {
-        SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
+        //SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
 
         SDL_BlitSurface(SingleMultiplayer.ButtonActiveSingle, NULL, screen, &SingleMultiplayer.PosButtonSingle);
 
@@ -258,7 +275,7 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
     }
     else if (SingleMultiplayer.MouseMotion == 2)
     {
-        SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
+        //SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
 
         SDL_BlitSurface(SingleMultiplayer.ButtonSingle, NULL, screen, &SingleMultiplayer.PosButtonSingle);
 
@@ -280,28 +297,30 @@ void FreeSingleMulti(SingleMulti *SingleMultiplayer) {
 }
 
 
-void Animation(menu *m){
-  int frame_Speed_Annim= 24 ;
-  //int frame_Speed_Annim2 = 34 ;
-  
-   Uint32 currentTime = SDL_GetTicks();
-  Uint32 elapsedTime = currentTime - m->Time;
-  
-  if (elapsedTime >= 1000 / frame_Speed_Annim && m->FrameNumber < 19) {
-        // Update the frame index
-        m->FrameNumber++;
-        
-        m->Time = currentTime;
-
-
-		 
-							
-					
-		
+void Animation(SDL_Surface* screen, menu* m){
+    Uint32 current_time = SDL_GetTicks();
+    if (current_time - m->Time > 20) { // display each frame for 100 milliseconds
+        if (m->FrameNumber == 0) { // if first frame is reached, switch to forward direction
+            m->FrameNumber = 1;
+            m->Reverse = 0 ; 
+            m->Time = current_time;
+        } else if (m->FrameNumber == 139) { // if last frame is reached, switch to reverse direction
+            m->Reverse = 1;
+            m->FrameNumber--;
+            m->Time = current_time;
+        } else if (m->FrameNumber > 0 && m->FrameNumber < 139 && !m->Reverse) { // if not first or last frame and going forward, update frame normally
+            m->FrameNumber++;
+            m->Time = current_time;
+        } else if (m->FrameNumber > 0 && m->FrameNumber < 139 && m->Reverse) { // if not first or last frame and going in reverse, update frame normally
+            m->FrameNumber--;
+            m->Time = current_time;
+        } else if (m->FrameNumber == 1) { // if first frame is reached and going in reverse, switch to forward direction
+            m->Reverse = 0;
+            m->FrameNumber++;
+            m->Time = current_time;
+        }
     }
-    /*else  if (m->FrameNumber>=19)
-			m->FrameNumber = 0 ;*/
-
+    SDL_BlitSurface(m->AnimationMenu[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
 	  
 }
 
@@ -316,7 +335,7 @@ void AfficherAnimation (menu m , SDL_Surface *screen)
 
 
 void freeAnimation(menu* m) {
-    for(int i = 0; i < 19; i++) {
+    for(int i = 0; i < 140; i++) {
         SDL_FreeSurface(m->AnimationMenu[i]);
         m->AnimationMenu[i] = NULL;
     }
@@ -335,11 +354,17 @@ void displayAnimation(SDL_Surface* screen, menu* m, int* animationFinished) {
         }
     }
     if (!*animationFinished) { // if animation is not finished, display the current frame
-        SDL_BlitSurface(m->AnimationMenu[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
+        SDL_BlitSurface(m->AnimationNova[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
         SDL_Flip(screen);
     }
 }
 
 
 
+void freeAnimationNova(menu* m) {
+    for(int i = 0; i < 19; i++) {
+        SDL_FreeSurface(m->AnimationNova[i]);
+        m->AnimationNova[i] = NULL;
+    }
+}
 
