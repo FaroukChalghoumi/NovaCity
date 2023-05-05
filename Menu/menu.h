@@ -54,7 +54,7 @@ typedef struct
     SDL_Rect PosButtonNewGame;
     SDL_Rect PosButtonLoadGame;
 
-
+    int MouseMotion;
 }NewLoad;
 
 typedef struct 
@@ -62,11 +62,18 @@ typedef struct
     //Settings Interface 
     SDL_Surface* SettingBackground;
     SDL_Surface* ButtonFullScreen;
+    SDL_Surface* ButtonFullScreenActive;
     SDL_Surface* ButtonMute;
+    SDL_Surface* ButtonMuteActive;
+    SDL_Surface* ReturnPlay;
+    SDL_Surface* ReturnPlayActive;
+    SDL_Surface* GameVolume;
     SDL_Rect PosSettingBackground;
     SDL_Rect PosButtonFullScreen;
     SDL_Rect PosButtonMute;
-
+    SDL_Rect PosButtonReturnPlay;
+    SDL_Rect PosGameVolume;
+int MouseMotion;
 
 }Setting;
 
@@ -75,10 +82,17 @@ typedef struct
     //annimation 
     SDL_Surface* AnimationMenu[150];
     SDL_Surface* AnimationNova[20];
+    SDL_Surface* AnimationCar[130] ;
     SDL_Rect PosAnimationMenu;
     int FrameNumber;
     int Time;
     int Reverse ; 
+    int AnimNovaFinished;
+
+    //Composants Graphique 
+    Play playGame;
+    Setting settingGame;
+    NewLoad SingleMultiplayer;
 
     int menuPlay ; 
     int settings;
@@ -99,12 +113,14 @@ void InitSettings(Setting *settingGame);
 void AfficherMenuInitial(Play playGame,SDL_Surface* screen);
 void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen);
 void AfficherPlay(SDL_Surface* screen);
-void AfficherSetting(SDL_Surface* screen);
+void AfficherSetting(Setting setting, SDL_Surface* screen);
 void AfficherAnimation (menu m , SDL_Surface *screen);
-void displayAnimation(SDL_Surface* screen, menu* m, int* animationFinished) ;
+void displayAnimation(SDL_Surface* screen, menu *m) ;
 
 void HandleMouseMotion(SDL_Event event, Play *playGame);
 void HandleMouseMotionSingleMulti(SDL_Event event, SingleMulti *singleMultiPlayer);
+void HandleInput(SDL_Event event, Play *playGame , menu *m);
+void HandleInputSetting(SDL_Event event, Setting *setting, menu *m);
 
 
 void Animation(SDL_Surface* screen, menu* m);
@@ -115,8 +131,10 @@ void FreePlay(Play* playGame) ;
 void FreeSingleMulti(SingleMulti *SingleMultiplayer);
 void freeAnimation(menu* m) ;
 void freeAnimationNova(menu* m) ;
+void freeAnimCar(menu *m);
+void freeSettings(Setting* setting);
 
-
+void AllMenu(menu *m,SDL_Surface* screen); 
 
 
 
