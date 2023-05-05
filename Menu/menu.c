@@ -1,19 +1,24 @@
 #include "menu.h"
-void InitAnimationMenu(menu *m)
+
+
+void InitMenuEssentials(menu *m)
 {
     	m->FrameNumber =0;
 	m->PosAnimationMenu.x = 0 ; 
 	m->PosAnimationMenu.y = 0 ; 
+
+
+    	
+    m->game = m->menuPlay = m->settings = m->SingleMulti = m->NewLoad = 0;
+    m->Time = 0 ; 
+    m->FrameNumber=0;
+    m->AnimNovaFinished = 0 ;
+}
+void InitAnimationMeta (menu *m)
+{
 	int i;
 	char ch[200];
-	for(i=0;i<19;i++)
-	{
-		sprintf(ch,"animNova/%d.jpg",i+1);
-		m->AnimationNova[i] = IMG_Load(ch);
-        if (m->AnimationNova[i]  == NULL) {
-        printf("Failed to load image %d .\n",i+1);
-        exit(1);}
-	}
+
 	for(i=0;i<140;i++)
 	{
         if (i<9)
@@ -28,8 +33,25 @@ void InitAnimationMenu(menu *m)
         exit(1);
     }
     }
+}
 
-    	for(i=0;i<124;i++)
+void InitAnimationNova(menu *m){
+	int i;
+	char ch[200];
+    	for(i=0;i<19;i++)
+	{
+		sprintf(ch,"animNova/%d.jpg",i+1);
+		m->AnimationNova[i] = IMG_Load(ch);
+        if (m->AnimationNova[i]  == NULL) {
+        printf("Failed to load image %d .\n",i+1);
+        exit(1);}
+	}
+
+}
+void InitAnimationCar(menu *m){
+    int i;
+	char ch[200];
+    for(i=0;i<124;i++)
 	{
         if (i<9)
 		sprintf(ch,"CarAnim/ezgif-frame-00%d.png",i+1);
@@ -44,11 +66,8 @@ void InitAnimationMenu(menu *m)
     }
 
 	}
-    m->game = m->menuPlay = m->settings = m->SingleMulti = m->NewLoad = 0;
-    m->Time = 0 ; 
-    m->FrameNumber=0;
-    m->AnimNovaFinished = 0 ;
 }
+
 
 void InitMenuInitial(Play *playGame) {
     // Load play background image
@@ -342,14 +361,7 @@ void Animation(SDL_Surface* screen, menu* m){
 	  
 }
 
-void AfficherAnimation (menu m , SDL_Surface *screen)
-{
-    printf("\nFrame = %d ",m.FrameNumber);
-        SDL_BlitSurface(m.AnimationMenu[0], NULL, screen, &m.PosAnimationMenu);
 
-    
-    
-}
 
 
 void freeAnimation(menu* m) {
@@ -363,12 +375,15 @@ void freeAnimation(menu* m) {
 
 void displayAnimation(SDL_Surface* screen, menu *m) {
     Uint32 current_time = SDL_GetTicks();
-    if (current_time - m->Time > 50 && m->AnimNovaFinished==0) { // display each frame for 100 milliseconds until animation is finished
+    int frameSpeed = 80 ;
+    if (m->menuPlay ==1)
+         frameSpeed = 50;
+    if (current_time - m->Time > frameSpeed && m->AnimNovaFinished==0) { // display each frame for 100 milliseconds until animation is finished
        {
         m->FrameNumber++;
         printf("\nframe = %d",m->FrameNumber);
        } 
-       if (m->menuPlay )
+       if (m->menuPlay ==1)
        {
         if (m->FrameNumber >= 122) { // if last frame is reached, animation is finished
             m->AnimNovaFinished = 1;
@@ -385,7 +400,7 @@ void displayAnimation(SDL_Surface* screen, menu *m) {
         
     }
     if (!m->AnimNovaFinished) { // if animation is not finished, display the current frame
-     if (m->menuPlay )
+     if (m->menuPlay ==2)
      {
         SDL_BlitSurface(m->AnimationCar[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
         SDL_Flip(screen);
@@ -411,27 +426,27 @@ void freeAnimationNova(menu* m) {
 
 
 
-void HandleInput(SDL_Event event, Play *playGame , menu *m)
+void HandleInput(SDL_Event event , menu *m)
 {
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
 
     // Handle mouse motion
     if (event.type == SDL_MOUSEMOTION) {
-        if (x > playGame->PosButtonPlay.x && x < playGame->PosButtonPlay.x + playGame->ButtonPlay->w &&
-            y > playGame->PosButtonPlay.y && y < playGame->PosButtonPlay.y + playGame->ButtonPlay->h) {
+        if (x >  m->playGame.PosButtonPlay.x && x <  m->playGame.PosButtonPlay.x + m->playGame.ButtonPlay->w &&
+            y >  m->playGame.PosButtonPlay.y && y <  m->playGame.PosButtonPlay.y + m->playGame.ButtonPlay->h) {
             // Mouse is over the "Play" button
-            playGame->MouseMotion = 1;
-        } else if (x > playGame->PosButtonSetting.x && x < playGame->PosButtonSetting.x + playGame->ButtonSetting->w &&
-                   y > playGame->PosButtonSetting.y && y < playGame->PosButtonSetting.y + playGame->ButtonSetting->h) {
+             m->playGame.MouseMotion = 1;
+        } else if (x >  m->playGame.PosButtonSetting.x && x <  m->playGame.PosButtonSetting.x +  m->playGame.ButtonSetting->w &&
+                   y >  m->playGame.PosButtonSetting.y && y <  m->playGame.PosButtonSetting.y +  m->playGame.ButtonSetting->h) {
             // Mouse is over the "Settings" button
-            playGame->MouseMotion = 2;
-        } else if (x > playGame->PosButtonQuit.x && x < playGame->PosButtonQuit.x + playGame->ButtonQuit->w &&
-                   y > playGame->PosButtonQuit.y && y < playGame->PosButtonQuit.y + playGame->ButtonQuit->h) {
+             m->playGame.MouseMotion = 2;
+        } else if (x >  m->playGame.PosButtonQuit.x && x <  m->playGame.PosButtonQuit.x +  m->playGame.ButtonQuit->w &&
+                   y >  m->playGame.PosButtonQuit.y && y <  m->playGame.PosButtonQuit.y +  m->playGame.ButtonQuit->h) {
             // Mouse is over the "Quit" button
-            playGame->MouseMotion = 3;
+             m->playGame.MouseMotion = 3;
         } else {
-            playGame->MouseMotion = 0;
+             m->playGame.MouseMotion = 0;
         }
     }
 
@@ -440,23 +455,23 @@ void HandleInput(SDL_Event event, Play *playGame , menu *m)
         switch (event.key.keysym.sym) {
             case SDLK_UP:
                 // Move selection up
-                if (playGame->MouseMotion > 1) {
-                    playGame->MouseMotion--;
+                if ( m->playGame.MouseMotion > 1) {
+                     m->playGame.MouseMotion--;
                 } else {
-                    playGame->MouseMotion = 3;
+                     m->playGame.MouseMotion = 3;
                 }
                 break;
             case SDLK_DOWN:
                 // Move selection down
-                if (playGame->MouseMotion < 3) {
-                    playGame->MouseMotion++;
+                if ( m->playGame.MouseMotion < 3) {
+                     m->playGame.MouseMotion++;
                 } else {
-                    playGame->MouseMotion = 1;
+                     m->playGame.MouseMotion = 1;
                 }
                 break;
             case SDLK_RETURN:
                 // Handle menu item selection
-                switch (playGame->MouseMotion) {
+                switch ( m->playGame.MouseMotion) {
                     case 1:
                         // Play button selected
                         // Perform actions here : Goto ==> Single Multi 
@@ -486,7 +501,7 @@ void HandleInput(SDL_Event event, Play *playGame , menu *m)
     }
 
 if (event.button.button == SDL_BUTTON_LEFT) {
-        switch (playGame->MouseMotion) {
+        switch ( m->playGame.MouseMotion) {
             
 
                  case 1:
@@ -574,17 +589,17 @@ void InitSettings(Setting *settingGame)
     settingGame->PosSettingBackground.x = 0;
     settingGame->PosSettingBackground.y = 0;
 
-    settingGame->PosButtonFullScreen.x = 100;
-    settingGame->PosButtonFullScreen.y = 200;
+    settingGame->PosButtonFullScreen.x = 300;
+    settingGame->PosButtonFullScreen.y = 100;
 
-    settingGame->PosButtonMute.x = 100;
+    settingGame->PosButtonMute.x = 300;
     settingGame->PosButtonMute.y = 300;
 
-    settingGame->PosButtonReturnPlay.x = 100;
+    settingGame->PosButtonReturnPlay.x = 300;
     settingGame->PosButtonReturnPlay.y = 400;
 
-    settingGame->PosGameVolume.x = 250;
-    settingGame->PosGameVolume.y = 220;
+    settingGame->PosGameVolume.x = 300;
+    settingGame->PosGameVolume.y = 550;
 
 
     settingGame->MouseMotion = 0 ; 
@@ -594,26 +609,26 @@ void InitSettings(Setting *settingGame)
 
 
 
-void HandleInputSetting(SDL_Event event, Setting *setting, menu *m) {
+void HandleInputSetting(SDL_Event event, menu *m) {
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
 
     // Handle mouse motion
     if (event.type == SDL_MOUSEMOTION) {
-        if (x > setting->PosButtonFullScreen.x && x < setting->PosButtonFullScreen.x + setting->ButtonFullScreen->w &&
-            y > setting->PosButtonFullScreen.y && y < setting->PosButtonFullScreen.y + setting->ButtonFullScreen->h) {
+        if (x > m->settingGame.PosButtonFullScreen.x && x < m->settingGame.PosButtonFullScreen.x + m->settingGame.ButtonFullScreen->w &&
+            y > m->settingGame.PosButtonFullScreen.y && y < m->settingGame.PosButtonFullScreen.y + m->settingGame.ButtonFullScreen->h) {
             // Mouse is over the "Fullscreen" button
-            setting->MouseMotion = 1;
-        } else if (x > setting->PosButtonMute.x && x < setting->PosButtonMute.x + setting->ButtonMute->w &&
-                   y > setting->PosButtonMute.y && y < setting->PosButtonMute.y + setting->ButtonMute->h) {
+            m->settingGame.MouseMotion = 1;
+        } else if (x > m->settingGame.PosButtonMute.x && x < m->settingGame.PosButtonMute.x + m->settingGame.ButtonMute->w &&
+                   y > m->settingGame.PosButtonMute.y && y < m->settingGame.PosButtonMute.y + m->settingGame.ButtonMute->h) {
             // Mouse is over the "Mute" button
-            setting->MouseMotion = 2;
-        } else if (x > setting->PosButtonReturnPlay.x && x < setting->PosButtonReturnPlay.x + setting->ReturnPlay->w &&
-                   y > setting->PosButtonReturnPlay.y && y < setting->PosButtonReturnPlay.y + setting->ReturnPlay->h) {
+            m->settingGame.MouseMotion = 2;
+        } else if (x > m->settingGame.PosButtonReturnPlay.x && x < m->settingGame.PosButtonReturnPlay.x + m->settingGame.ReturnPlay->w &&
+                   y > m->settingGame.PosButtonReturnPlay.y && y < m->settingGame.PosButtonReturnPlay.y + m->settingGame.ReturnPlay->h) {
             // Mouse is over the "Return to Play" button
-            setting->MouseMotion = 3;
+            m->settingGame.MouseMotion = 3;
         } else {
-            setting->MouseMotion = 0;
+            m->settingGame.MouseMotion = 0;
         }
     }
 
@@ -622,23 +637,23 @@ void HandleInputSetting(SDL_Event event, Setting *setting, menu *m) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
                 // Move selection up
-                if (setting->MouseMotion > 1) {
-                    setting->MouseMotion--;
+                if (m->settingGame.MouseMotion > 1) {
+                    m->settingGame.MouseMotion--;
                 } else {
-                    setting->MouseMotion = 3;
+                    m->settingGame.MouseMotion = 3;
                 }
                 break;
             case SDLK_DOWN:
                 // Move selection down
-                if (setting->MouseMotion < 3) {
-                    setting->MouseMotion++;
+                if (m->settingGame.MouseMotion < 3) {
+                    m->settingGame.MouseMotion++;
                 } else {
-                    setting->MouseMotion = 1;
+                    m->settingGame.MouseMotion = 1;
                 }
                 break;
             case SDLK_RETURN:
                 // Handle menu item selection
-                switch (setting->MouseMotion) {
+                switch (m->settingGame.MouseMotion) {
                     case 1:
                         // Fullscreen button selected
                         // Perform actions here
@@ -663,7 +678,7 @@ void HandleInputSetting(SDL_Event event, Setting *setting, menu *m) {
     }
 
     if (event.button.button == SDL_BUTTON_LEFT) {
-        switch (setting->MouseMotion) {
+        switch (m->settingGame.MouseMotion) {
             case 1:
                 // Fullscreen button was clicked
                 // Perform actions here
@@ -779,6 +794,7 @@ void freeSettings(Setting* setting)
 
 void freeAnimCar(menu *m)
 {
+    //if ()
     for (int i = 0; i < 100; i++) {
         if (m->AnimationCar[i] != NULL) {
             SDL_FreeSurface(m->AnimationCar[i]);
@@ -789,22 +805,50 @@ void freeAnimCar(menu *m)
 
 
 
-void AllMenu(menu *m,SDL_Surface* screen)
+void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
 {
     if (m->menuPlay == m->SingleMulti ==  m->NewLoad  == m->game ==m->settings==0)
     {
+        //InitMenuEssentials(m);
+        //InitAnimationNova(m);
         displayAnimation(screen,m);
-        if (m->AnimNovaFinished == 0)
-            {freeAnimationNova(m) ;
-            m->menuPlay == 1 ; 
-
+        if (m->AnimNovaFinished)
+            {
+                //printf("hello %d",m->menuPlay);
+              //  freeAnimationNova(m) ;
+            m->menuPlay = 1 ; 
+            //printf("initmenu %d",m->menuPlay);
+            screen = SDL_SetVideoMode(1280, 720, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+            //FreePlay(&m->playGame);
             }
     }
 
-    if (m->menuPlay)
+    if (m->menuPlay == 1)
     {
+        
         //FreeSingleMulti(&m->SingleMultiplayer);
         InitMenuInitial(&m->playGame);
+        InitAnimationMeta(m);
+        m->menuPlay = 2 ; 
+    }
+     if (m->menuPlay == 2)
+    {
+        //printf("initmenu");
+        Animation(screen, m);
+        HandleInput(event,m);
+        AfficherMenuInitial(m->playGame, screen);
+    }
+
+    if (m->settings ==1){
+        //FreePlay(&m->playGame);
+        //freeAnimation(m);
+        InitSettings(&m->settingGame);
+        m->settings =2 ;
+        printf("\nsettings= %d",m->settings);
+    }
+    if (m->settings==2){
+        AfficherSetting(m->settingGame,screen);
+        HandleInputSetting(event,m);
     }
 
 }

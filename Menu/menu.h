@@ -5,7 +5,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+
+
 
 typedef struct 
 {
@@ -101,26 +102,26 @@ typedef struct
     int game;
 }menu;
 
-void InitAnimationMenu(menu *m);
+void InitMenuEssentials(menu *m);
 
 void InitMenuInitial(Play *playGame);
 void InitSingleMulti(SingleMulti *SingleMultiplayer);
 void InitNewLoad(NewLoad *NewLoadGame);
 void InitSettings(Setting *settingGame);
-
-
+void InitAnimationMeta (menu *m);
+void InitAnimationNova(menu *m);
+void InitAnimationCar(menu *m);
 
 void AfficherMenuInitial(Play playGame,SDL_Surface* screen);
 void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen);
 void AfficherPlay(SDL_Surface* screen);
 void AfficherSetting(Setting setting, SDL_Surface* screen);
-void AfficherAnimation (menu m , SDL_Surface *screen);
 void displayAnimation(SDL_Surface* screen, menu *m) ;
 
 void HandleMouseMotion(SDL_Event event, Play *playGame);
 void HandleMouseMotionSingleMulti(SDL_Event event, SingleMulti *singleMultiPlayer);
-void HandleInput(SDL_Event event, Play *playGame , menu *m);
-void HandleInputSetting(SDL_Event event, Setting *setting, menu *m);
+void HandleInput(SDL_Event event, menu *m);
+void HandleInputSetting(SDL_Event event, menu *m);
 
 
 void Animation(SDL_Surface* screen, menu* m);
@@ -134,7 +135,7 @@ void freeAnimationNova(menu* m) ;
 void freeAnimCar(menu *m);
 void freeSettings(Setting* setting);
 
-void AllMenu(menu *m,SDL_Surface* screen); 
+void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event); 
 
 
 
