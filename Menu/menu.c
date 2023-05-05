@@ -88,14 +88,14 @@ void InitMenuInitial(Play *playGame) {
     playGame->PosPlayBackground.x = 0;
     playGame->PosPlayBackground.y = 0;
 
-    playGame->PosButtonPlay.x = 250;
+    playGame->PosButtonPlay.x = 500;
     playGame->PosButtonPlay.y = 200;
 
-    playGame->PosButtonSetting.x = 250;
-    playGame->PosButtonSetting.y = 300;
+    playGame->PosButtonSetting.x = 500;
+    playGame->PosButtonSetting.y = 350;
 
-    playGame->PosButtonQuit.x = 250;
-    playGame->PosButtonQuit.y = 400;
+    playGame->PosButtonQuit.x = 500;
+    playGame->PosButtonQuit.y = 500;
 
     playGame->MouseMotion = 0 ;
 }
@@ -104,7 +104,8 @@ void AfficherMenuInitial(Play playGame, SDL_Surface* screen)
 {
     if (playGame.MouseMotion == 0){
     // Blit the background image onto the screen
-    SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //Replaced with animation Metaverse 
 
     // Blit the "play" button onto the screen
     SDL_BlitSurface(playGame.ButtonPlay, NULL, screen, &playGame.PosButtonPlay);
@@ -118,8 +119,9 @@ void AfficherMenuInitial(Play playGame, SDL_Surface* screen)
     }
     else if (playGame.MouseMotion == 1)
     {
-        // Blit the background image onto the screen
-    SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+       // Blit the background image onto the screen
+    //SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //Replaced with animation Metaverse 
 
     // Blit the "play" button onto the screen
     SDL_BlitSurface(playGame.ButtonActivePlay, NULL, screen, &playGame.PosButtonPlay);
@@ -134,7 +136,8 @@ void AfficherMenuInitial(Play playGame, SDL_Surface* screen)
         else if (playGame.MouseMotion == 2)
     {
         // Blit the background image onto the screen
-    SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //Replaced with animation Metaverse 
 
     // Blit the "play" button onto the screen
     SDL_BlitSurface(playGame.ButtonPlay, NULL, screen, &playGame.PosButtonPlay);
@@ -150,7 +153,8 @@ void AfficherMenuInitial(Play playGame, SDL_Surface* screen)
         else if (playGame.MouseMotion == 3)
     {
         // Blit the background image onto the screen
-    SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //SDL_BlitSurface(playGame.PlayBackground, NULL, screen, &playGame.PosPlayBackground);
+    //Replaced with animation Metaverse 
 
     // Blit the "play" button onto the screen
     SDL_BlitSurface(playGame.ButtonPlay, NULL, screen, &playGame.PosButtonPlay);
