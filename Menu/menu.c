@@ -472,7 +472,7 @@ void HandleInput(SDL_Event event , menu *m)
                      m->playGame.MouseMotion = 1;
                 }
                 break;
-            case SDLK_RETURN:
+            /*case SDLK_RETURN:
                 // Handle menu item selection
                 switch ( m->playGame.MouseMotion) {
                     case 1:
@@ -497,20 +497,21 @@ void HandleInput(SDL_Event event , menu *m)
                     default:
                         break;
                 }
-                break;
+                break;*/
             default:
                 break;
         }
     }
 
-if (event.button.button == SDL_BUTTON_LEFT) {
+if (event.button.button == SDL_MOUSEBUTTONDOWN &&  event.button.button == SDL_BUTTON_LEFT) {
         switch ( m->playGame.MouseMotion) {
             
 
                  case 1:
                         // "Play" button was clicked
                         // Perform actions here : Goto ==> Single Multi 
-                        m->menuPlay = m->settings = m->NewLoad = m->game = 0 ; 
+                        m->menuPlay = 0;
+                        m->settings = m->NewLoad = m->game = 0 ; 
                         m->game=1 ; 
                         m->FrameNumber = 0; 
                         m->AnimNovaFinished = 0 ; 
@@ -835,7 +836,8 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
     {
         //InitMenuEssentials(m);
         //InitAnimationNova(m);
-        displayAnimation(screen,m);
+        //if (m->AnimationNova == 0 )
+            displayAnimation(screen,m);
         if (m->AnimNovaFinished)
             {
                 //printf("hello %d",m->menuPlay);
@@ -869,6 +871,7 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
         //freeAnimation(m);
         printf("\nsettings= %d",m->settings);
         InitSettings(&m->settingGame);
+        printf("\nmouse Settings = %d",m->settingGame.MouseMotion);
         //m->settings =2 ;
         //InitSettings(&m->settingGame);
         AfficherSetting(m->settingGame,screen);
@@ -883,7 +886,7 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
         displayAnimation(screen,m);
         if (m->AnimNovaFinished)
         {
-            
+            //return 1 ;
         }
     }
     
