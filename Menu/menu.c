@@ -376,22 +376,24 @@ void freeAnimation(menu* m) {
 void displayAnimation(SDL_Surface* screen, menu *m) {
     Uint32 current_time = SDL_GetTicks();
     int frameSpeed = 80 ;
-    if (m->menuPlay ==1)
+    if (m->game ==1)
          frameSpeed = 50;
     if (current_time - m->Time > frameSpeed && m->AnimNovaFinished==0) { // display each frame for 100 milliseconds until animation is finished
        {
         m->FrameNumber++;
         printf("\nframe = %d",m->FrameNumber);
        } 
-       if (m->menuPlay ==1)
+       if (m->game ==1)
        {
         if (m->FrameNumber >= 122) { // if last frame is reached, animation is finished
             m->AnimNovaFinished = 1;
         } else {
             m->Time = current_time;
         }
-       }else{
-    if (m->FrameNumber >= 19) { // if last frame is reached, animation is finished
+       }
+
+        if (m->menuPlay ==0 && m->game == 0){
+    if (m->FrameNumber >= 20) { // if last frame is reached, animation is finished
             m->AnimNovaFinished = 1;
         } else {
             m->Time = current_time;
@@ -399,12 +401,13 @@ void displayAnimation(SDL_Surface* screen, menu *m) {
        }
         
     }
-    if (!m->AnimNovaFinished) { // if animation is not finished, display the current frame
-     if (m->menuPlay ==2)
+    if (m->AnimNovaFinished==0) { // if animation is not finished, display the current frame
+     if (m->game ==1)
      {
         SDL_BlitSurface(m->AnimationCar[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
         SDL_Flip(screen);
-     }else{
+     }
+      if (m->menuPlay ==0 && m->game == 0){
 SDL_BlitSurface(m->AnimationNova[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
         SDL_Flip(screen);
      }
@@ -475,8 +478,8 @@ void HandleInput(SDL_Event event , menu *m)
                     case 1:
                         // Play button selected
                         // Perform actions here : Goto ==> Single Multi 
-                        m->menuPlay = m->settings = m->NewLoad = m->game = 0 ; 
-                        m->SingleMulti=1 ; 
+                        m->menuPlay = m->settings = m->NewLoad = m->SingleMulti = 0 ; 
+                        m->game=1 ; 
 
                         break;
                     case 2:
@@ -508,7 +511,9 @@ if (event.button.button == SDL_BUTTON_LEFT) {
                         // "Play" button was clicked
                         // Perform actions here : Goto ==> Single Multi 
                         m->menuPlay = m->settings = m->NewLoad = m->game = 0 ; 
-                        m->SingleMulti=1 ; 
+                        m->game=1 ; 
+                        m->FrameNumber = 0; 
+                        m->AnimNovaFinished = 0 ; 
 
                         break;
                     case 2:
@@ -536,74 +541,90 @@ if (event.button.button == SDL_BUTTON_LEFT) {
 void InitSettings(Setting *settingGame)
 {
     // Load background image
-    settingGame->SettingBackground = IMG_Load("back.jpg");
-    if (settingGame->SettingBackground == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "back.jpg", SDL_GetError());
-        return;
-    }
+    if ( settingGame->SettingBackground  && 
+            settingGame->ButtonFullScreen &&
+            settingGame->ButtonFullScreenActive &&
+            settingGame->ButtonMute &&
+            settingGame->ButtonMuteActive&&
+            settingGame->ReturnPlay&&
+            settingGame->ReturnPlayActive&&
+            settingGame->GameVolume)
+            {
+                 printf("\nAlready INITIALIZED");
+            } 
+            else 
+            {
+                 settingGame->SettingBackground = IMG_Load("back.jpg");
+            if (settingGame->SettingBackground == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "back.jpg", SDL_GetError());
+                return;
+            }
 
-    // Load fullscreen button images
-    settingGame->ButtonFullScreen = IMG_Load("modescreen.png");
-    if (settingGame->ButtonFullScreen == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "modescreen.png", SDL_GetError());
-        return;
-    }
-    settingGame->ButtonFullScreenActive = IMG_Load("modescreen1.png");
-    if (settingGame->ButtonFullScreenActive == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "modescreen1.png", SDL_GetError());
-        return;
-    }
+            // Load fullscreen button images
+            settingGame->ButtonFullScreen = IMG_Load("modescreen.png");
+            if (settingGame->ButtonFullScreen == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "modescreen.png", SDL_GetError());
+                return;
+            }
+            settingGame->ButtonFullScreenActive = IMG_Load("modescreen1.png");
+            if (settingGame->ButtonFullScreenActive == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "modescreen1.png", SDL_GetError());
+                return;
+            }
 
-    // Load mute button images
-    settingGame->ButtonMute = IMG_Load("son.png");
-    if (settingGame->ButtonMute == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "son2.png", SDL_GetError());
-        return;
-    }
-    settingGame->ButtonMuteActive = IMG_Load("son1.png");
-    if (settingGame->ButtonMuteActive == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "son1.png", SDL_GetError());
-        return;
-    }
+            // Load mute button images
+            settingGame->ButtonMute = IMG_Load("son.png");
+            if (settingGame->ButtonMute == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "son2.png", SDL_GetError());
+                return;
+            }
+            settingGame->ButtonMuteActive = IMG_Load("son1.png");
+            if (settingGame->ButtonMuteActive == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "son1.png", SDL_GetError());
+                return;
+            }
 
-    // Load return-to-play button images
-    settingGame->ReturnPlay = IMG_Load("retour.png");
-    if (settingGame->ReturnPlay == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "retour.png", SDL_GetError());
-        return;
-    }
-    settingGame->ReturnPlayActive = IMG_Load("retour1.png");
-    if (settingGame->ReturnPlayActive == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "retour1.png", SDL_GetError());
-        return;
-    }
+            // Load return-to-play button images
+            settingGame->ReturnPlay = IMG_Load("retour.png");
+            if (settingGame->ReturnPlay == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "retour.png", SDL_GetError());
+                return;
+            }
+            settingGame->ReturnPlayActive = IMG_Load("retour1.png");
+            if (settingGame->ReturnPlayActive == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "retour1.png", SDL_GetError());
+                return;
+            }
 
-    // Load game volume image
-    settingGame->GameVolume = IMG_Load("PLAY.png");
-    if (settingGame->GameVolume == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "PLAY.png", SDL_GetError());
-        return;
-    }
+            // Load game volume image
+            settingGame->GameVolume = IMG_Load("PLAY.png");
+            if (settingGame->GameVolume == NULL) {
+                printf("Unable to load image %s! SDL Error: %s\n", "PLAY.png", SDL_GetError());
+                return;
+            }
 
-    // Set positions of images and buttons
-    settingGame->PosSettingBackground.x = 0;
-    settingGame->PosSettingBackground.y = 0;
+            // Set positions of images and buttons
+            settingGame->PosSettingBackground.x = 0;
+            settingGame->PosSettingBackground.y = 0;
 
-    settingGame->PosButtonFullScreen.x = 300;
-    settingGame->PosButtonFullScreen.y = 100;
+            settingGame->PosButtonFullScreen.x = 300;
+            settingGame->PosButtonFullScreen.y = 100;
 
-    settingGame->PosButtonMute.x = 300;
-    settingGame->PosButtonMute.y = 300;
+            settingGame->PosButtonMute.x = 300;
+            settingGame->PosButtonMute.y = 300;
 
-    settingGame->PosButtonReturnPlay.x = 300;
-    settingGame->PosButtonReturnPlay.y = 400;
+            settingGame->PosButtonReturnPlay.x = 300;
+            settingGame->PosButtonReturnPlay.y = 400;
 
-    settingGame->PosGameVolume.x = 300;
-    settingGame->PosGameVolume.y = 550;
+            settingGame->PosGameVolume.x = 300;
+            settingGame->PosGameVolume.y = 550;
 
 
-    settingGame->MouseMotion = 0 ; 
+            settingGame->MouseMotion = 0 ; 
 
+
+            }
+           
 }
 
 
@@ -666,6 +687,8 @@ void HandleInputSetting(SDL_Event event, menu *m) {
                         // Return to Play button selected
                         // Perform actions here
                         m->settings = 0;
+                        //freeSettings(&m->settingGame);
+                        m->settingGame.MouseMotion=0;
                         m->menuPlay = 1;
                         break;
                     default:
@@ -691,6 +714,7 @@ void HandleInputSetting(SDL_Event event, menu *m) {
                 // Return to Play button was clicked
                 // Perform actions here
                 m->settings = 0;
+                m->settingGame.MouseMotion=0;
                 m->menuPlay = 1;
                 break;
             default:
@@ -827,6 +851,7 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
     {
         
         //FreeSingleMulti(&m->SingleMultiplayer);
+        //freeSettings(&m->settingGame);
         InitMenuInitial(&m->playGame);
         InitAnimationMeta(m);
         m->menuPlay = 2 ; 
@@ -842,14 +867,26 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
     if (m->settings ==1){
         //FreePlay(&m->playGame);
         //freeAnimation(m);
-        InitSettings(&m->settingGame);
-        m->settings =2 ;
         printf("\nsettings= %d",m->settings);
-    }
-    if (m->settings==2){
+        InitSettings(&m->settingGame);
+        //m->settings =2 ;
+        //InitSettings(&m->settingGame);
         AfficherSetting(m->settingGame,screen);
         HandleInputSetting(event,m);
+        
     }
+    if (m->game == 1)
+    {
+        
+        //printf("\n game= %d",m->game);
+        //printf("\n menu= %d",m->menuPlay);
+        displayAnimation(screen,m);
+        if (m->AnimNovaFinished)
+        {
+            
+        }
+    }
+    
 
 }
 

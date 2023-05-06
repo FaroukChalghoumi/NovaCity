@@ -20,6 +20,10 @@ screen = SDL_SetVideoMode(1000, 700, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     menu m ;
     InitMenuEssentials(&m);
 InitAnimationNova(&m);
+InitMenuInitial(&m.playGame);
+        InitAnimationMeta(&m);
+InitSettings(&m.settingGame);
+InitAnimationCar(&m);
 
 int AnimFinished = 0 ;
 int arduino = 0 ; 
