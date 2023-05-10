@@ -132,7 +132,7 @@ void FreePlay(Play* playGame) ;
 void FreeSingleMulti(SingleMulti *SingleMultiplayer);
 void freeAnimation(menu* m) ;
 void freeAnimationNova(menu* m) ;
-void freeAnimCar(menu *m);
+void freeAnimCar(menu *m,SDL_Surface* screen);
 void freeSettings(Setting* setting);
 
 void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event); 

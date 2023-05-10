@@ -456,7 +456,7 @@ void HandleInput(SDL_Event event , menu *m)
     // Handle keyboard input
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-            case SDLK_UP:
+            /*case SDLK_UP:
                 // Move selection up
                 if ( m->playGame.MouseMotion > 1) {
                      m->playGame.MouseMotion--;
@@ -471,7 +471,7 @@ void HandleInput(SDL_Event event , menu *m)
                 } else {
                      m->playGame.MouseMotion = 1;
                 }
-                break;
+                break;*/
             /*case SDLK_RETURN:
                 // Handle menu item selection
                 switch ( m->playGame.MouseMotion) {
@@ -503,25 +503,34 @@ void HandleInput(SDL_Event event , menu *m)
         }
     }
 
-if (event.button.button == SDL_MOUSEBUTTONDOWN &&  event.button.button == SDL_BUTTON_LEFT) {
+//if (event.button.button == SDL_MOUSEBUTTONDOWN &&  event.button.button == SDL_BUTTON_LEFT) {
         switch ( m->playGame.MouseMotion) {
             
 
                  case 1:
+                 
                         // "Play" button was clicked
                         // Perform actions here : Goto ==> Single Multi 
-                        m->menuPlay = 0;
-                        m->settings = m->NewLoad = m->game = 0 ; 
-                        m->game=1 ; 
-                        m->FrameNumber = 0; 
-                        m->AnimNovaFinished = 0 ; 
+                       if (event.button.button == SDL_BUTTON_LEFT)
+                        {
+                            //printf("\nmenuPlay = %d |settings = %d |game = %d | MouseMotionPlay = %d",m->menuPlay,m->settings,m->game,m->playGame.MouseMotion);
+
+                            m->menuPlay = 0;
+                            m->settings = m->NewLoad = m->game = 0 ; 
+                            m->game=1 ; 
+                            m->FrameNumber = 0; 
+                            m->AnimNovaFinished = 0 ; 
+                        }
 
                         break;
                     case 2:
                         // "Settings" button was clicked
                         // Perform actions here
-                        m->menuPlay = m->SingleMulti = m->NewLoad = m->game = 0 ; 
-                        m->settings=1 ; 
+                        if (event.button.button == SDL_BUTTON_LEFT)
+                        {
+                            m->menuPlay = m->SingleMulti = m->NewLoad = m->game = 0 ; 
+                            m->settings=1 ; 
+                        }
                         break;
                     case 3:
                         // "Quit" button was clicked
@@ -531,7 +540,7 @@ if (event.button.button == SDL_MOUSEBUTTONDOWN &&  event.button.button == SDL_BU
                         break;
                     default:
                         break;
-        }
+        //}
     }
 
 
@@ -817,10 +826,11 @@ void freeSettings(Setting* setting)
 
 
 
-void freeAnimCar(menu *m)
+void freeAnimCar(menu *m,SDL_Surface* screen)
 {
     //if ()
     for (int i = 0; i < 100; i++) {
+        displayAnimation(screen,m);
         if (m->AnimationCar[i] != NULL) {
             SDL_FreeSurface(m->AnimationCar[i]);
             m->AnimationCar[i] = NULL;
@@ -884,8 +894,10 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
         //printf("\n game= %d",m->game);
         //printf("\n menu= %d",m->menuPlay);
         displayAnimation(screen,m);
+        //m->game = 0;
         if (m->AnimNovaFinished)
         {
+            freeAnimCar(m,screen);
             //return 1 ;
         }
     }

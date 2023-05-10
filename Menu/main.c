@@ -55,7 +55,7 @@ int arduino = 0 ;
             //HandleInputSetting(event,&s,&m);
             
         }
-        printf("\nmenuPlay = %d |settings = %d |game = %d | MouseMotionPlay = %d",m.menuPlay,m.settings,m.game,m.playGame.MouseMotion);
+       // printf("\nmenuPlay = %d |settings = %d |game = %d | MouseMotionPlay = %d",m.menuPlay,m.settings,m.game,m.playGame.MouseMotion);
 AllMenu(&m,screen,event);
         // Render the Play menu
         //AfficherMenuInitial(playGame, screen);
