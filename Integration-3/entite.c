@@ -5,8 +5,8 @@ int
 	entite_h=195/2,
 	entite_w=135/2,
 	entite_y=0,
-	pos_init_x=700,
-	pos_init_y=450,
+	pos_init_x=50,
+	pos_init_y=570,
 	entite_x=0;
 
 
@@ -24,7 +24,7 @@ void init_tab_anim_entite(SDL_Rect *clip,entite *e)
 
 void initialiser_entite(entite *e)
 {
-	e->entite = IMG_Load("nour.png");
+	e->entite = IMG_Load("voiture_test.png");
 	e->pos_entite.x = pos_init_x;
 	e->pos_entite.y = pos_init_y;
 	init_tab_anim_entite(e->anim_entite,e);
@@ -36,7 +36,8 @@ void initialiser_entite(entite *e)
 
 void afficher_entite(entite * e , SDL_Surface *screen)
 {
-	SDL_BlitSurface(e->entite,&e->anim_entite[e->frame_entite], screen, &e->pos_entite);
+	//SDL_BlitSurface(e->entite,&e->anim_entite[e->frame_entite], screen, &e->pos_entite);
+	SDL_BlitSurface(e->entite,NULL, screen, &e->pos_entite);
 }
 
 void mvt_entiteInt(entite *e,Perso *p)
@@ -45,13 +46,14 @@ void mvt_entiteInt(entite *e,Perso *p)
 		pos_init_x--;
 
 }
-void mvt_entite(entite *e,Perso *p)
+void mvt_entite(entite *e,Perso *p )
 {
 	int diff_x=e->pos_entite.x-p->img.pos1.x;	
-  	int diff_y=p->img.pos1.y-e->pos_entite.y;
-	if (diff_x<350 && diff_x>50 )
+  	//int diff_y=p->img.pos1.y-e->pos_entite.y;
+
+	/*if (diff_x<350 && diff_x>50 )
 	{
-		e->pos_entite.x-=3;
+		e->pos_entite.x+=1;
 
 		if(diff_y<350 && diff_y>50)
 	{
@@ -77,13 +79,13 @@ void mvt_entite(entite *e,Perso *p)
   	}
 	else if (diff_x > 350 )
 	{
-		e->pos_entite.x = pos_init_x;
+		e->pos_entite.x += 1;
 	}
 
 	if (diff_x >-350 && diff_x < 0)
 	{
-  		e->pos_entite.x+=3;
-
+  		e->pos_entite.x+=2;
+	}
 		if(diff_y<350 && diff_y>50)
 	{
 		e->pos_entite.y+=3;
@@ -107,10 +109,16 @@ void mvt_entite(entite *e,Perso *p)
   	}
 	else if (diff_x <-350 )
 	{
-		e->pos_entite.x = pos_init_x;
+		e->pos_entite.x +=1 ;
 	}
 	
-	
+	*/
+
+
+if (diff_x <= 0)
+	e->pos_entite.x +=2;
+	else e->pos_entite.x +=1 ;
+
 	
 	
 
@@ -181,3 +189,22 @@ void afficher_perso(personnage * p , SDL_Surface *screen)
 {
 	SDL_BlitSurface(p->perso,NULL, screen, &p->perso_pos);
 }*/
+
+
+
+void PersoRUN (Perso *P , Background *b , entite *e){
+	
+	if (P->derec==1&&P->keystate[SDLK_SPACE]){
+		e->pos_entite.x -=3;
+		b->camera.x += 4 ; 
+	}
+
+	
+	
+}
+
+
+
+
+
+

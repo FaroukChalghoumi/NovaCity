@@ -101,9 +101,71 @@ void saut(Perso *P){
 
 
 
-void MajPerso (Perso* P , int event )
+void MajPerso (Perso* P , int event  )
 {
 
+
+    int right = SDLK_RIGHT;
+    int left = SDLK_LEFT;
+    int up = SDLK_UP;
+    int RUN = SDLK_SPACE ; 
+
+    if (P->keystate[right]){
+        P->desacceleration=0;
+        P->acc+=0.008;
+        if(P->acc>=0.1)
+            P->acc=0.1;
+        P->derec=1;
+        if(P->keystate[up]) {
+            if (P->jumt == 0)
+            {
+                P->jumt=1;
+                P->i=-50;
+                P->y=P->img.pos1.y;
+            
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 8;
+            }
+    }
+    
+    }
+    else if (P->keystate[left]){
+        P->desacceleration=0;
+        P->acc+=0.008;
+        if(P->acc>=0.1)
+            P->acc=0.1;
+        P->derec=2;
+        if(P->keystate[up]) {
+            if (P->jumt == 0)
+            {
+                P->jumt=1;
+                P->i=-50;
+                P->y=P->img.pos1.y;
+            
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 8;
+            }
+    }
+    }
+    else if(P->keystate[up]) {
+        if (P->jumt == 0)
+        {
+                P->jumt=1;
+                P->i=-50;
+                P->y=P->img.pos1.y;
+            
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 8; 
+        }
+    }
+    else    {
+        P->desacceleration=1;
+    }
+
+     
+
+
+
+
+
+/*
 switch ( event )
 {
     case 1 : //SDLK_RIGHT
@@ -138,6 +200,7 @@ switch ( event )
         P->desacceleration=1;
     break ; 
 }
+*/
 
 
 

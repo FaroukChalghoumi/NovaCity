@@ -46,10 +46,11 @@ int main()
     
     
 	
-    SDL_EnableKeyRepeat(100,10);
+    //SDL_EnableKeyRepeat(100,10);
     
     while(continuer)
     {   //printf("\ny= %f",personnage.distance);
+        personnage.keystate = SDL_GetKeyState(NULL);
         start=SDL_GetTicks();
         dt=start-end;
         if(dt>60){
@@ -58,7 +59,7 @@ int main()
         afficherminimap(m,screen , B.camera);
         annimerminimap (&m  );
         afficherPerso(personnage,screen);
-        //afficher_entite(&e ,screen);
+        afficher_entite(&e ,screen);
         affichertemp(&temps,screen,police);
         
         
@@ -72,7 +73,7 @@ int main()
                 continuer = 0;
                 break;
 
-            case SDL_KEYDOWN:
+           /* case SDL_KEYDOWN:
                 if(event.key.keysym.sym==SDLK_RIGHT){
                         MajPerso(&personnage,1);
                         
@@ -94,8 +95,10 @@ int main()
 
                 case SDL_KEYUP:
                     MajPerso(&personnage,4);
-                    break;
+                    break;*/
                 }
+                MajPerso(&personnage,1);
+                PersoRUN(&personnage,&B,&e);
             UpdatePerso(&personnage ) ; 
             end=start;
             if (start > 100000 ) 

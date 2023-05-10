@@ -10,6 +10,7 @@
 #include <SDL/SDL_mixer.h>
 #include<time.h>
 #include "perso.h"
+#include "background.h"
 
 typedef struct 
 {
@@ -40,6 +41,8 @@ typedef struct
 	int gestion(entite* e);
 
 	void mvt_entiteInt(entite *e,Perso *p);
+
+	void PersoRUN (Perso *P , Background *b , entite *e);
 
 
 #endif 

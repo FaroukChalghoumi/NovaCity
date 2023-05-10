@@ -5,6 +5,7 @@
 #include <SDL/SDL_ttf.h>
 
 
+
 typedef struct{
 SDL_Rect pos1,pos2;
 SDL_Surface *img;
@@ -23,7 +24,11 @@ typedef struct
     float speed,acc,distance;
     int desacceleration;
     int i;
+    
     int jumt,y;
+
+    Uint8 *keystate ; 
+
 }Perso;
 
 void initPerso(Perso *P);
@@ -32,6 +37,7 @@ void animePerso(Perso *P);
 void deplacerPerso(Perso *P,int dt);
 void saut(Perso *P);
 //Integration 
+//void MajPerso (Perso* P , int event );
 void MajPerso (Perso* P , int event );
 void UpdatePerso   (Perso* P);
 

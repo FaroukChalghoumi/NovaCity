@@ -276,16 +276,16 @@ void scrollingInt(Background *B, Perso P   )
 
 	if(P.derec==1){
 		if(P.jumt==1)
-        B->camera.x+=((int)((P.distance)) +10);
+        B->camera.x+=((int)((P.distance)) +13);
 
-		B->camera.x+=((int)((P.distance)) +5);
+		B->camera.x+=((int)((P.distance)) +10);
 		//e->pos_entite.x -=10 ; 
     }
     else if(P.derec==2){
 		if(P.jumt==1)
-		B->camera.x-=((int)((P.distance))+7);
+		B->camera.x-=((int)((P.distance))+13);
 
-        B->camera.x-=((int)((P.distance))+5);
+        B->camera.x-=((int)((P.distance))+10);
     }
 	
 

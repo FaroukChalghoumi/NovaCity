@@ -6,7 +6,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include "perso.h"
-#include "entite.h"
+
 
 typedef struct
 {
