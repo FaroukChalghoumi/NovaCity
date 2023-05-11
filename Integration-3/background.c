@@ -271,6 +271,7 @@ void freeBackground(Background *B)
 
 void scrollingInt(Background *B, Perso P   )
 {
+	printf("\ncamera X = %d",B->camera.x);
 	if(P.jumt==1)
 	B->camera.y=0.06*(P.i)*(P.i)-150+288;
 
