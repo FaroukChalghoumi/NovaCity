@@ -48,6 +48,7 @@ void afficherminimap (minimap m, SDL_Surface * screen , SDL_Rect camera)
 	scroll.h = 125  ; 
 	scroll.x = camera.x /17 ; 
 	scroll.y = camera.y /17 ; 
+	
   SDL_BlitSurface(m.map,&scroll,screen,&m.positionmap);
   SDL_BlitSurface(m.animMiniMap1[m.numCadre], NULL, screen , &m.PosanimMiniMap1 );
   SDL_BlitSurface(m.minijoueur,NULL,screen,&m.positionminijoueur);
@@ -75,27 +76,33 @@ void annimerminimap (minimap *m  )
 }
 
 
-void affichertemp (int *temps,SDL_Surface *screen,TTF_Font *police)
+void affichertemp(int *temps, SDL_Surface *screen, TTF_Font *police)
 {
-SDL_Surface *chrono = NULL;
-SDL_Rect positionChrono;
-SDL_Color couleur = {0,0,0};
+    SDL_Surface *chrono = NULL;
+    SDL_Rect positionChrono;
+    SDL_Color couleur = {0, 0, 0};
 
-int min=0,sec=0;
-char texteChrono [10] = "";
+    int hours = 0, minutes = 0, seconds = 0;
+    char texteChrono[10] = "";
 
-positionChrono.x = 40;
-positionChrono.y = 50;
-(*temps)=SDL_GetTicks();
-(*temps)/=1000;
-min=((*temps)/60);
-sec=(*temps) - (60*min);
+    positionChrono.x = 40;
+    positionChrono.y = 50;
+    (*temps) = SDL_GetTicks();
+    (*temps) /= 1000;
 
-sprintf(texteChrono,"%02d:%02d",min,sec);
+    hours = (*temps) / 3600;
+    (*temps) -= (hours * 3600);
+    minutes = (*temps) / 60;
+    seconds = (*temps) % 60;
 
-chrono = TTF_RenderText_Solid(police,texteChrono,couleur);
-SDL_BlitSurface(chrono,NULL,screen,&positionChrono);
+    sprintf(texteChrono, "%02d:%02d:%02d", hours, minutes, seconds);
+
+    chrono = TTF_RenderText_Solid(police, texteChrono, couleur);
+    SDL_BlitSurface(chrono, NULL, screen, &positionChrono);
 }
+
+
+
 
 
 

@@ -34,8 +34,11 @@ int main()
 
     //Init Entite 
     entite e;
-	initialiser_entite (&e) ;
-    
+	initialiser_entite (&e,"voiture_test.png") ;
+
+    entite ennemie1;
+    initialiser_entite_EnnemieRace(&ennemie1,"testcar(1).png");
+    int nbEnnemie = 0 ; 
 
 
 
@@ -109,12 +112,14 @@ int main()
             scrollingInt(&B,personnage);
             mvt_entiteInt(&e,&personnage);
             animerBackground(&B,personnage);
+            EnnemieRace (&personnage,&ennemie1,&B,&nbEnnemie);
             
             //
-            //printf("\ncontinuer= %d",continuer);
+            //printf("\npos ennemie = %d",ennemie1.pos_entite.x);
         }
         
 
+afficher_entite(&ennemie1 ,screen);
         animePerso(&personnage);
 
         MAJMinimap(personnage.img.pos1,  &m, B.camera, 20);

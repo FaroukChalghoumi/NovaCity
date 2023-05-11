@@ -22,10 +22,24 @@ void init_tab_anim_entite(SDL_Rect *clip,entite *e)
         }  
 }
 
-void initialiser_entite(entite *e)
+void initialiser_entite(entite *e , char *imagePath )
 {
-	e->entite = IMG_Load("voiture_test.png");
+	//e->entite = IMG_Load("voiture_test.png");
+	e->entite = IMG_Load(imagePath);
 	e->pos_entite.x = pos_init_x;
+	e->pos_entite.y = pos_init_y;
+	init_tab_anim_entite(e->anim_entite,e);
+	e->frame_entite=0;
+	e->direction=0;  
+	
+}
+
+
+void initialiser_entite_EnnemieRace(entite *e , char *imagePath )
+{
+	//e->entite = IMG_Load("voiture_test.png");
+	e->entite = IMG_Load(imagePath);
+	e->pos_entite.x = 1000;
 	e->pos_entite.y = pos_init_y;
 	init_tab_anim_entite(e->anim_entite,e);
 	e->frame_entite=0;
@@ -204,6 +218,38 @@ void PersoRUN (Perso *P , Background *b , entite *e){
 }
 
 
+void EnnemieRace (Perso *P , entite *e , Background *b ,int *nbEnnemie){
+	/*switch (b->camera.x / 1000)
+	{
+	case 1:
+		initialiser_entite_EnnemieRace(e,"testcar(1).png");
+		break;
+	
+	default:
+		break;
+	}*/
+
+	//if (b->camera.x == 1000)
+	//initialiser_entite_EnnemieRace(e,"testcar(1).png");
+
+	if (P->derec == 1&& e->pos_entite.x >0)
+		e->pos_entite.x -=7;
+		else if (e->pos_entite.x <= 0)
+		{
+			(*nbEnnemie) = (*nbEnnemie)+1;
+			printf("\nNb Ennemie = %d ",*(nbEnnemie));
+			if (*(nbEnnemie) == 0 )
+				e->entite = IMG_Load("hero.png");
+				else if (*(nbEnnemie) == 1)
+				e->entite = IMG_Load("hero.png");
+			e->pos_entite.x = 1500;
+		}
+
+	if (P->derec == 1&&P->jumt==1 && e->pos_entite.x>=0)
+		e->pos_entite.x -=20;
+
+
+}
 
 
 

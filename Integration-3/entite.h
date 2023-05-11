@@ -31,7 +31,8 @@ typedef struct
 }personnage ;*/
 
 	void init_tab_anim_entite(SDL_Rect* clip,entite *e); 
-	void initialiser_entite (entite *e) ;
+	void initialiser_entite(entite *e , char *imagePath );
+	void initialiser_entite_EnnemieRace(entite *e , char *imagePath );
 	void afficher_entite(entite * e , SDL_Surface *screen);
 	void anim(entite *e);
 	void mvt_entite(entite *e,Perso *p);
@@ -43,6 +44,8 @@ typedef struct
 	void mvt_entiteInt(entite *e,Perso *p);
 
 	void PersoRUN (Perso *P , Background *b , entite *e);
+
+	void EnnemieRace (Perso *P , entite *e , Background *b ,int *nbEnnemie);
 
 
 #endif 

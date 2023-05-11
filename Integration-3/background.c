@@ -130,7 +130,7 @@ void animerBackground(Background *e , Perso P){
 	Animer(e);
 	//printf("\n pos Feu = %d",e->posanimFeu[0].y);
 	if(P.jumt==1)
-	e->posanimFeu[0].y+=(P.i)*(P.i)/900;
+		e->posanimFeu[0].y+=(P.i)*(P.i)/900;
 if(P.derec==1)
 	{
 		e->posanimFeu[0].y = 500 ; 
@@ -271,7 +271,7 @@ void freeBackground(Background *B)
 
 void scrollingInt(Background *B, Perso P   )
 {
-	printf("\ncamera X = %d",B->camera.x);
+	//printf("\ncamera X = %d",B->camera.x);
 	if(P.jumt==1)
 	B->camera.y=0.06*(P.i)*(P.i)-150+288;
 
