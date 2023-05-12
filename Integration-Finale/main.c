@@ -85,6 +85,14 @@ posTest.y = 100 ;
     int stage = 1 ; 
  multiplayer = menuAlll() ;
 
+//INIT ARDUINOOOOOOO
+
+char buffer[100];                   // un buffer
+    int i;
+
+    // ouverture du port à 9600 bauds
+    int fd = serialport_init("/dev/ttyUSB0", 9600);
+    if (fd==-1) return -1;
 
  
 	
@@ -94,6 +102,8 @@ posTest.y = 100 ;
     {   //printf("\ny= %f",personnage.distance);
        // multiplayer = AllMenu(&menu,screen,event);
        // multiplayer = menuAlll() ;
+       screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+       
     if (multiplayer == 0)
     {
                 personnage.keystate = SDL_GetKeyState(NULL);
@@ -109,6 +119,26 @@ posTest.y = 100 ;
                 afficher_entite(&e ,screen);
                 affichertemp(&temps,screen,police);
                 // SDL_BlitSurface(test,NULL,screen,&posTest);
+
+
+/*
+                //  lecture d'une ligne
+                serialport_read_until(fd, buffer, '\r', 99, 10000);
+
+                // suppression de la fin de ligne
+                for (i=0 ; buffer[i]!='\r' && i<100 ; i++);
+                buffer[i] = 0;
+
+                // écriture du résultat
+                printf("%s", buffer);
+
+                if (strcmp(buffer,"1")){
+                    personnage.derec=1;
+                    deplacerPerso(&personnage,5); 
+                    scrollingInt(&B,personnage);
+                }
+*/
+
                 
                 SDL_PollEvent(&event);
                 
