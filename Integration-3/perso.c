@@ -4,8 +4,8 @@
 
 
 void initPerso(Perso *P){
-    P->img.img=IMG_Load("spritesheet_car.png");
-
+    //P->img.img=IMG_Load("spritesheet_car.png");spritesheet_voiture_rouge
+P->img.img=IMG_Load("spritesheet_voiture_rouge.png");
     P->img.pos1.x=300;
     P->img.pos1.y=520;
 
@@ -242,4 +242,27 @@ switch ( event )
 
   }
     
+
+
+void loadStage2Perso(Perso *P )
+{
+    P->img.img=IMG_Load("spritedheet_150.png");
+
+    P->img.pos1.x=300;
+    P->img.pos1.y=520;
+
+    P->img.pos2.x=P->img.img->w;
+    P->img.pos2.y=P->img.img->h/2;
+    P->img.pos2.w=P->img.img->w/11;
+    P->img.pos2.h=P->img.img->h/4 ;
+
+    P->jumt = 0 ; 
+    P->i = 0;
+    P->count=0;
+    P->derec=0;
+    P->speed=0.1;
+    P->acc=0;
+    P->desacceleration=0;
+}
+
 

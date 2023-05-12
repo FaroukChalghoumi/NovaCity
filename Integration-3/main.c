@@ -2,7 +2,7 @@
 #include "background.h"
 #include "entite.h"
 #include "tic.h"
-
+#include "ENG.h"
 int main()
 {
     //SDL init 
@@ -41,13 +41,22 @@ int main()
     initialiser_entite_EnnemieRace(&ennemie1,"testcar(1).png");
     int nbEnnemie = 0 ; 
 
+    entite collectPower ; 
+    initialiser_entite_EnnemieRace(&collectPower,"testcar(1).png");
+    int nbPower = 0 ; 
 
+
+SDL_Surface *test =  IMG_Load("health2.png");
+SDL_Rect posTest ; 
+
+posTest.x = 200 ; 
+posTest.y = 100 ; 
 
     SDL_Event event;
     int continuer=1;
     int time = 0 ;
 
-    
+    int stage = 1 ; 
     
 	
     //SDL_EnableKeyRepeat(100,10);
@@ -63,9 +72,10 @@ int main()
         afficherminimap(m,screen , B.camera);
         annimerminimap (&m  );
         afficherPerso(personnage,screen);
+        if (stage == 1)
         afficher_entite(&e ,screen);
         affichertemp(&temps,screen,police);
-        
+        // SDL_BlitSurface(test,NULL,screen,&posTest);
         
         SDL_PollEvent(&event);
         
@@ -102,26 +112,63 @@ int main()
                     break;*/
                 }
                 MajPerso(&personnage,1);
-                PersoRUN(&personnage,&B,&e);
+                
             UpdatePerso(&personnage ) ; 
             end=start;
             if (start > 100000 ) 
             	start = end = 0 ; 
             
+        if (stage == 1)
+        {
+            PersoRUN(&personnage,&B,&e);
             update_entite(&e,&personnage);
+            mvt_entiteInt(&e,&personnage);
+        }
+           
+
             deplacerPerso(&personnage,5); 
             scrollingInt(&B,personnage);
-            mvt_entiteInt(&e,&personnage);
+            
             animerBackground(&B,personnage);
+
             EnnemieRace (&personnage,&ennemie1,&B,&nbEnnemie);
+            PowerCollect(&personnage,&collectPower,&B,&nbPower);
+
 
             if (detect_collision(&personnage,&ennemie1) && personnage.jumt ==0 ){
-                    int x  = TicToeAll();
+                 
+                 if (B.camera.x >= 5000 && stage == 1 )
+                 {
+                    int x  = enigmeFuul();
+                    if (x)
+                    {
+                        loadStage2Background(&B);
+                        loadStage2MiniMap(&m);
+                        loadStage2Perso(&personnage);
+                        screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+                    }
+                     stage ++ ;
+                 }
+                 else {
+                         int x  = TicToeAll();
+                     //int x  = enigmeFuul();
                         printf("\nx= %d",x);
                             screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
-                            ennemie1.pos_entite.x = 100 ; 
+                            ennemie1.pos_entite.x = 0 ; 
+                            personnage.img.pos1.x = 150 ;
+                            e.pos_entite.x = 200; 
+                 }
+                                    
+                  
 
             }
+            if (detect_collision(&personnage,&collectPower))
+            {
+                nbPower++;
+                collectPower.pos_entite.x = 0 ; 
+            }
+
+
             
                 
             
@@ -131,9 +178,10 @@ int main()
         
 
 afficher_entite(&ennemie1 ,screen);
+afficher_entite(&collectPower ,screen);
         animePerso(&personnage);
 
-        MAJMinimap(personnage.img.pos1,  &m, B.camera, 20);
+        //MAJMinimap(personnage.img.pos1,  &m, B.camera, 20);
 
         if (collisionparfaite(screen,personnage) != 10)
         {

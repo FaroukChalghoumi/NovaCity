@@ -36,6 +36,7 @@ void annimerminimap (minimap *m  );
 SDL_Color getpixel(SDL_Surface *pSurface, int x, int y);
 int collisionparfaite(SDL_Surface *psurface, Perso p );
 void collision(SDL_Surface *psurface, Perso *p);
+void loadStage2MiniMap(minimap *m  );
 
 #endif
 

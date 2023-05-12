@@ -43,4 +43,9 @@ void UpdatePerso   (Perso* P);
 
 void libererperso(Perso* p);
 
+
+
+void loadStage2Perso(Perso *P );
+
+
 #endif

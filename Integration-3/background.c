@@ -311,5 +311,17 @@ void scrollingInt(Background *B, Perso P   )
 	//B->camera.y+=P.distance;
 }
 
+void loadStage2Background(Background *B )
+{
+	
+		B->PositionBg.x=0;
+				B->PositionBg.y=50;
+				B->camera.x=100;
+				B->camera.y=288;
+				B->camera.w = 1000;
+				B->camera.h = 800;
+				B->BgImg= IMG_Load("background_stage2BIG.png");///fefe
 
+	
+}
 

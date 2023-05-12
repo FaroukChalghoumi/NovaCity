@@ -227,3 +227,9 @@ void liberer(minimap *m)
 SDL_FreeSurface(m->minijoueur);
 SDL_FreeSurface(m->map);
 }
+
+
+void loadStage2MiniMap(minimap *m  )
+{
+	m->map = IMG_Load("background_stage2MINI.png");
+}

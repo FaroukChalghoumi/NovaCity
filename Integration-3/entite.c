@@ -237,7 +237,7 @@ void EnnemieRace (Perso *P , entite *e , Background *b ,int *nbEnnemie){
 		else if (e->pos_entite.x <= 0)
 		{
 			(*nbEnnemie) = (*nbEnnemie) +1;
-			//printf("\nNb Ennemie = %d ",*(nbEnnemie));
+			printf("\nNb Ennemie = %d | camere = %d",*(nbEnnemie),b->camera.x);
 			if (*(nbEnnemie) == 0 )
 				e->entite = IMG_Load("hero.png");
 				else if (*(nbEnnemie) == 1)
@@ -250,6 +250,42 @@ void EnnemieRace (Perso *P , entite *e , Background *b ,int *nbEnnemie){
 
 
 }
+
+void PowerCollect (Perso *P , entite *e , Background *b ,int *nbEnnemie)
+{
+	if (P->derec == 1&& e->pos_entite.x >0)
+		e->pos_entite.x -=7;
+		else if (e->pos_entite.x <= 0)
+		{
+			//(*nbEnnemie) = (*nbEnnemie) +1;
+			printf("\nNb Ennemie = %d | camere = %d",*(nbEnnemie),b->camera.x);
+			if (*(nbEnnemie) == 1 )
+				{
+					e->entite = IMG_Load("antivirus.png");
+					e->pos_entite.y = 300 ; 
+				}
+				else if (*(nbEnnemie) == 3)
+				{
+					e->entite = IMG_Load("dabouzagaz.png");
+					e->pos_entite.y = 400 ; 
+				}
+			e->pos_entite.x = 1500;
+		}
+
+	if (P->derec == 1&&P->jumt==1 && e->pos_entite.x>=0)
+		e->pos_entite.x -=20;
+}
+
+
+void loadStage2Entite(entite *e ,int stage  )
+{
+	
+}
+
+
+
+
+
 
 
 

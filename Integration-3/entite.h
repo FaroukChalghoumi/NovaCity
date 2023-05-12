@@ -47,5 +47,7 @@ typedef struct
 
 	void EnnemieRace (Perso *P , entite *e , Background *b ,int *nbEnnemie);
 
+void loadStage2Entite(entite *e ,int stage  );
+void PowerCollect (Perso *P , entite *e , Background *b ,int *nbEnnemie);
 
 #endif 

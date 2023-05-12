@@ -49,4 +49,7 @@ void scrollingInt(Background *B, Perso P );
 void freeBackground(Background *B);
 //void saveScore(scoreInfo s, char *fileName);
 
+void loadStage2Background(Background *B  );
+
+
 #endif
