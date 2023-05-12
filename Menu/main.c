@@ -1,8 +1,17 @@
 #include "menu.h"
-
+#include "arduino.h"
+#include <stdio.h>   
+#include <unistd.h>  
+#include <fcntl.h>  
+#include <errno.h>   
+#include <termios.h>  
+#include <string.h>  
+#include <sys/ioctl.h>
+#include <stdint.h> 
+#include "serie.h"
 
 int main(int argc, char* argv[]) {
-    SDL_Surface* screen;
+   /* SDL_Surface* screen;
     SDL_Init(SDL_INIT_VIDEO);
 screen = SDL_SetVideoMode(1000, 700, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     
@@ -79,7 +88,44 @@ x=AllMenu(&m,screen,event);
     SDL_Quit();
     return 0;
 
+*/
+SDL_Init(SDL_INIT_VIDEO);
+SDL_Event event;
+    int running = 1;
+    
+        char buffer[100];                   // un buffer
+    int i;
+
+    // ouverture du port à 9600 bauds
+    int fd = serialport_init("/dev/ttyUSB0", 9600);
+    if (fd==-1) return -1;
+    
+while (running) {
+while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = 0;
+            }
+
+}
+        //  lecture d'une ligne
+        serialport_read_until(fd, buffer, '\r', 99, 10000);
+
+        // suppression de la fin de ligne
+        for (i=0 ; buffer[i]!='\r' && i<100 ; i++);
+        buffer[i] = 0;
+
+        // écriture du résultat
+        printf("%s", buffer);
+
+//printf("\ntest = %d ",test);
+//if (x==1)
+//printf("\nX = %d ",x);
+}
+
+    // fermeture du port
+    serialport_flush(fd);
+    serialport_close(fd);
 
 
-
+ return 0;
 }

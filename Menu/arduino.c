@@ -6,7 +6,7 @@
 
 int arduinoWriteData(int x)
 {
-    char chemin[]="/dev/ttyACM0";
+    char chemin[]="/dev/ttyUSB0";
     FILE*f;
 
     f=fopen(chemin,"w");
@@ -19,9 +19,9 @@ int arduinoWriteData(int x)
     return(0);
 }
 
-int arduinoReadData(int *x)
+int arduinoReadData(char *x)
 {
-    char chemin[]="/dev/ttyACM0";
+    char chemin[]="/dev/ttyUSB0";
     FILE*f;
     char c;
     f=fopen(chemin,"r");
@@ -29,8 +29,8 @@ int arduinoReadData(int *x)
     if(f == NULL)
         return(-1);
 
-    fscanf(f,"%d",x);
-
+    fscanf(f,"%s",x);
+    printf("\nX = %s ",x);
     fclose(f);
 
     return(0);
