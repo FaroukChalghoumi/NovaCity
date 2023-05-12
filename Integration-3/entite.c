@@ -174,8 +174,8 @@ void update_entite(entite *e,Perso *p)
 int detect_collision(Perso *p, entite* e)
 {
 
-	if ((p->img.pos1.x + p->img.pos1. w< e->pos_entite. x) || (p->img.pos1.x> e->pos_entite. x + e->pos_entite. w) ||
-		(p->img.pos1.y + p->img.pos1.h< e->pos_entite. y) || (p->img.pos1.y> e->pos_entite. y + e->pos_entite. h ))
+	if ((p->img.pos1.x + (p->img.img->w /11 )< e->pos_entite. x) || (p->img.pos1.x> e->pos_entite. x + e->entite->w) ||
+		(p->img.pos1.y + 150< e->pos_entite. y) || (p->img.pos1.y> e->pos_entite. y + e->pos_entite. h ))
 		return 0;
 	else 
 		return 1;
@@ -236,8 +236,8 @@ void EnnemieRace (Perso *P , entite *e , Background *b ,int *nbEnnemie){
 		e->pos_entite.x -=7;
 		else if (e->pos_entite.x <= 0)
 		{
-			(*nbEnnemie) = (*nbEnnemie)+1;
-			printf("\nNb Ennemie = %d ",*(nbEnnemie));
+			(*nbEnnemie) = (*nbEnnemie) +1;
+			//printf("\nNb Ennemie = %d ",*(nbEnnemie));
 			if (*(nbEnnemie) == 0 )
 				e->entite = IMG_Load("hero.png");
 				else if (*(nbEnnemie) == 1)

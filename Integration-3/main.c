@@ -1,6 +1,7 @@
 #include "minimap.h"
 #include "background.h"
 #include "entite.h"
+#include "tic.h"
 
 int main()
 {
@@ -113,6 +114,16 @@ int main()
             mvt_entiteInt(&e,&personnage);
             animerBackground(&B,personnage);
             EnnemieRace (&personnage,&ennemie1,&B,&nbEnnemie);
+
+            if (detect_collision(&personnage,&ennemie1) && personnage.jumt ==0 ){
+                    int x  = TicToeAll();
+                        printf("\nx= %d",x);
+                            screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+                            ennemie1.pos_entite.x = 100 ; 
+
+            }
+            
+                
             
             //
             //printf("\npos ennemie = %d",ennemie1.pos_entite.x);
