@@ -7,6 +7,17 @@
 #include <SDL/SDL_mixer.h>
 
 
+#include "arduino.h"
+#include <stdio.h>   
+#include <unistd.h>  
+#include <fcntl.h>  
+#include <errno.h>   
+#include <termios.h>  
+#include <string.h>  
+#include <sys/ioctl.h>
+#include <stdint.h> 
+#include "serie.h"
+
 
 typedef struct 
 {

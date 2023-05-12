@@ -1,0 +1,2 @@
+Assets/exit-no1.png#Assets/exit-yes1.png#y#Assets/quest_1.jpg#Assets/youwin.png#Assets/game_over.png#pour gagner repondre avec yes (tapez y)\n TEST 
+Assets/exit-no1.png#Assets/exit-yes1.png#n#Assets/quest_2.jpg#Assets/youwin.png#Assets/game_over.png#pour gagner repondre avec no (tapez n)\n TEST

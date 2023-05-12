@@ -1,17 +1,8 @@
 #include "menu.h"
-#include "arduino.h"
-#include <stdio.h>   
-#include <unistd.h>  
-#include <fcntl.h>  
-#include <errno.h>   
-#include <termios.h>  
-#include <string.h>  
-#include <sys/ioctl.h>
-#include <stdint.h> 
-#include "serie.h"
+
 
 int main(int argc, char* argv[]) {
-   /* SDL_Surface* screen;
+   SDL_Surface* screen;
     SDL_Init(SDL_INIT_VIDEO);
 screen = SDL_SetVideoMode(1000, 700, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     
@@ -88,8 +79,15 @@ x=AllMenu(&m,screen,event);
     SDL_Quit();
     return 0;
 
-*/
-SDL_Init(SDL_INIT_VIDEO);
+
+
+
+
+
+
+
+
+/*SDL_Init(SDL_INIT_VIDEO);
 SDL_Event event;
     int running = 1;
     
@@ -127,5 +125,5 @@ while (SDL_PollEvent(&event)) {
     serialport_close(fd);
 
 
- return 0;
+ return 0;*/
 }
