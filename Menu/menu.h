@@ -93,7 +93,8 @@ typedef struct
     //Composants Graphique 
     Play playGame;
     Setting settingGame;
-    NewLoad SingleMultiplayer;
+    NewLoad NewLoadGame;
+    SingleMulti SingleMultiplayer;
 
     int menuPlay ; 
     int settings;
@@ -120,6 +121,7 @@ void displayAnimation(SDL_Surface* screen, menu *m) ;
 
 void HandleMouseMotion(SDL_Event event, Play *playGame);
 void HandleMouseMotionSingleMulti(SDL_Event event, SingleMulti *singleMultiPlayer);
+void HandleInputSingleMulti(SDL_Event event , menu *m);
 void HandleInput(SDL_Event event, menu *m);
 void HandleInputSetting(SDL_Event event, menu *m);
 
@@ -135,7 +137,7 @@ void freeAnimationNova(menu* m) ;
 void freeAnimCar(menu *m,SDL_Surface* screen);
 void freeSettings(Setting* setting);
 
-void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event); 
+int AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event); 
 
 
 

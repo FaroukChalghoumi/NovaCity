@@ -24,6 +24,8 @@ InitMenuInitial(&m.playGame);
         InitAnimationMeta(&m);
 InitSettings(&m.settingGame);
 InitAnimationCar(&m);
+InitSingleMulti(&m.SingleMultiplayer);
+int x = -1 ; 
 
 int AnimFinished = 0 ;
 int arduino = 0 ; 
@@ -56,13 +58,13 @@ int arduino = 0 ;
             
         }
        // printf("\nmenuPlay = %d |settings = %d |game = %d | MouseMotionPlay = %d",m.menuPlay,m.settings,m.game,m.playGame.MouseMotion);
-AllMenu(&m,screen,event);
+x=AllMenu(&m,screen,event);
         // Render the Play menu
         //AfficherMenuInitial(playGame, screen);
         //AfficherSingleMulti(singleMulti,screen);
         //AfficherSetting(s,screen);
    // }
-        
+        printf("\nX = %d ",x);
         
  SDL_Flip(screen);
     }
@@ -71,6 +73,8 @@ AllMenu(&m,screen,event);
     //FreePlay(&playGame);
     //freeSettings(&s);
     //FreeSingleMulti(&singleMulti);
+
+    printf("\nX = %d ",x);
     
     SDL_Quit();
     return 0;

@@ -251,21 +251,21 @@ void FreePlay(Play* playGame) {
 
 void InitSingleMulti(SingleMulti *SingleMultiplayer) {
     // Load images using IMG_Load
-    SingleMultiplayer->SingleMultiBackground = IMG_Load("back.jpg");
-    SingleMultiplayer->ButtonSingle = IMG_Load("PLAY.png");
-    SingleMultiplayer->ButtonMulti = IMG_Load("EXIT1.png");
-    SingleMultiplayer->ButtonActiveSingle = IMG_Load("PP.png");
-    SingleMultiplayer->ButtonActiveMulti = IMG_Load("EXIT.png");
+    SingleMultiplayer->SingleMultiBackground = IMG_Load("backMeta.jpg");
+    SingleMultiplayer->ButtonSingle = IMG_Load("solo1.png");
+    SingleMultiplayer->ButtonMulti = IMG_Load("multi1.png");
+    SingleMultiplayer->ButtonActiveSingle = IMG_Load("solo2.png");
+    SingleMultiplayer->ButtonActiveMulti = IMG_Load("multi2.png");
 
     // Set positions for images
     SingleMultiplayer->PosSingleMultiBackground.x = 0;
     SingleMultiplayer->PosSingleMultiBackground.y = 0;
 
-    SingleMultiplayer->PosButtonSingle.x = 500;
-    SingleMultiplayer->PosButtonSingle.y = 200;
+    SingleMultiplayer->PosButtonSingle.x = 200;
+    SingleMultiplayer->PosButtonSingle.y = 350;
 
     SingleMultiplayer->PosButtonMulti.x = 500;
-    SingleMultiplayer->PosButtonMulti.y = 400;
+    SingleMultiplayer->PosButtonMulti.y = 350;
 }
 
 
@@ -296,7 +296,7 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
     // Blit images onto the screen surface
     if (SingleMultiplayer.MouseMotion == 0)
     {
-        //SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
+        SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
 
         SDL_BlitSurface(SingleMultiplayer.ButtonSingle, NULL, screen, &SingleMultiplayer.PosButtonSingle);
 
@@ -304,7 +304,7 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
     }
     else if (SingleMultiplayer.MouseMotion == 1)
     {
-        //SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
+        SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
 
         SDL_BlitSurface(SingleMultiplayer.ButtonActiveSingle, NULL, screen, &SingleMultiplayer.PosButtonSingle);
 
@@ -312,7 +312,7 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
     }
     else if (SingleMultiplayer.MouseMotion == 2)
     {
-        //SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
+        SDL_BlitSurface(SingleMultiplayer.SingleMultiBackground, NULL, screen, &SingleMultiplayer.PosSingleMultiBackground);
 
         SDL_BlitSurface(SingleMultiplayer.ButtonSingle, NULL, screen, &SingleMultiplayer.PosButtonSingle);
 
@@ -322,7 +322,44 @@ void AfficherSingleMulti(SingleMulti SingleMultiplayer,SDL_Surface* screen) {
 
 
 }
+void HandleInputSingleMulti(SDL_Event event , menu *m)
+{
+switch ( m->SingleMultiplayer.MouseMotion) {
+            
 
+                 case 1:
+                 
+                        // "Play" button was clicked
+                        // Perform actions here : Goto ==> Single Multi 
+                       if (event.button.button == SDL_BUTTON_LEFT && m->SingleMulti == 1)
+                        {
+                            printf("\nmenuPlay = %d |settings = %d |game = %d | MouseMotionPlay = %d",m->menuPlay,m->settings,m->game,m->playGame.MouseMotion);
+
+                            m->menuPlay = 0;
+                            m->settings = m->NewLoad  ; 
+                            m->SingleMulti =0 ; 
+                            m->game=1 ; 
+                            m->FrameNumber = 0; 
+                            m->AnimNovaFinished = 0 ; 
+                        }
+
+                        break;
+                    case 2:
+                        // "Settings" button was clicked
+                        // Perform actions here
+                        if (event.button.button == SDL_BUTTON_LEFT && m->SingleMulti == 1)
+                        {
+                            m->menuPlay = 0;
+                            m->settings = m->NewLoad ; 
+                            m->SingleMulti =0 ; 
+                            m->game=2 ; 
+                            m->FrameNumber = 0; 
+                            m->AnimNovaFinished = 0 ; 
+                        }
+                        break;
+}
+
+}
 void FreeSingleMulti(SingleMulti *SingleMultiplayer) {
     // Free loaded images
     SDL_FreeSurface(SingleMultiplayer->SingleMultiBackground);
@@ -376,14 +413,14 @@ void freeAnimation(menu* m) {
 void displayAnimation(SDL_Surface* screen, menu *m) {
     Uint32 current_time = SDL_GetTicks();
     int frameSpeed = 80 ;
-    if (m->game ==1)
+    if (m->game ==1 || m->game == 2)
          frameSpeed = 50;
     if (current_time - m->Time > frameSpeed && m->AnimNovaFinished==0) { // display each frame for 100 milliseconds until animation is finished
        {
         m->FrameNumber++;
         printf("\nframe = %d",m->FrameNumber);
        } 
-       if (m->game ==1)
+       if (m->game ==1  || m->game == 2)
        {
         if (m->FrameNumber >= 122) { // if last frame is reached, animation is finished
             m->AnimNovaFinished = 1;
@@ -402,7 +439,7 @@ void displayAnimation(SDL_Surface* screen, menu *m) {
         
     }
     if (m->AnimNovaFinished==0) { // if animation is not finished, display the current frame
-     if (m->game ==1)
+     if (m->game ==1 || m->game == 2)
      {
         SDL_BlitSurface(m->AnimationCar[m->FrameNumber], NULL, screen, &m->PosAnimationMenu);
         SDL_Flip(screen);
@@ -517,7 +554,8 @@ void HandleInput(SDL_Event event , menu *m)
 
                             m->menuPlay = 0;
                             m->settings = m->NewLoad = m->game = 0 ; 
-                            m->game=1 ; 
+                            m->SingleMulti =1 ; 
+                            m->game=0 ; 
                             m->FrameNumber = 0; 
                             m->AnimNovaFinished = 0 ; 
                         }
@@ -537,6 +575,7 @@ void HandleInput(SDL_Event event , menu *m)
                         // Perform actions here
                         m->menuPlay = m->SingleMulti = m->NewLoad = m->game = 0 ;
                          m->settings=0 ; 
+                         exit(0);
                         break;
                     default:
                         break;
@@ -840,7 +879,7 @@ void freeAnimCar(menu *m,SDL_Surface* screen)
 
 
 
-void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
+int AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
 {
     if (m->menuPlay == m->SingleMulti ==  m->NewLoad  == m->game ==m->settings==0)
     {
@@ -888,20 +927,28 @@ void AllMenu(menu *m,SDL_Surface* screen ,SDL_Event event)
         HandleInputSetting(event,m);
         
     }
-    if (m->game == 1)
+    if (m->SingleMulti ==1)
+    {
+        
+        AfficherSingleMulti(m->SingleMultiplayer,screen);
+        HandleMouseMotionSingleMulti(event,&m->SingleMultiplayer);
+        HandleInputSingleMulti(event,m);
+    }
+    if (m->game == 1 || m->game == 2)
     {
         
         //printf("\n game= %d",m->game);
         //printf("\n menu= %d",m->menuPlay);
+        screen = SDL_SetVideoMode(1200, 660, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
         displayAnimation(screen,m);
         //m->game = 0;
         if (m->AnimNovaFinished)
         {
             freeAnimCar(m,screen);
-            //return 1 ;
+            return m->game  - 1  ;
         }
     }
-    
+    return 0 ; 
 
 }
 
