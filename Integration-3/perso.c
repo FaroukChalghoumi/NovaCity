@@ -24,6 +24,9 @@ P->img.img=IMG_Load("spritesheet_voiture_rouge.png");
     
 }
 
+
+
+
 void afficherPerso(Perso P,SDL_Surface* screen){
     SDL_BlitSurface(P.img.img,&P.img.pos2,screen,&P.img.pos1);
     //SDL_BlitSurface(P.img.img,NULL,screen,&P.img.pos1);
@@ -101,7 +104,7 @@ void saut(Perso *P){
 
 
 
-void MajPerso (Perso* P , int event  )
+void MajPerso (Perso* P  )
 {
 
 
@@ -249,7 +252,7 @@ void loadStage2Perso(Perso *P )
     P->img.img=IMG_Load("spritedheet_150.png");
 
     P->img.pos1.x=300;
-    P->img.pos1.y=520;
+    P->img.pos1.y=500;
 
     P->img.pos2.x=P->img.img->w;
     P->img.pos2.y=P->img.img->h/2;
@@ -266,3 +269,132 @@ void loadStage2Perso(Perso *P )
 }
 
 
+
+
+///////////////Multiplayer Tache Blanche :
+void initPersoMultiplayer(Perso *P , char *ImagePath , SDL_Rect pos){
+    //P->img.img=IMG_Load("spritesheet_car.png");spritesheet_voiture_rouge
+P->img.img=IMG_Load(ImagePath);
+    P->img.pos1 = pos ; 
+
+    P->img.pos2.x=P->img.img->w;
+    P->img.pos2.y=P->img.img->h/2;
+    P->img.pos2.w=P->img.img->w/11;
+    P->img.pos2.h=P->img.img->h/4 ;
+
+    P->jumt = 0 ; 
+    P->i = 0;
+    P->count=0;
+    P->derec=0;
+    P->speed=0.1;
+    P->acc=0;
+    P->desacceleration=0;
+    
+}
+
+
+
+void MajPerso2 (Perso* P  )
+{
+
+
+    int right = SDLK_d;
+    int left = SDLK_q;
+    int up = SDLK_z;
+    int RUN = SDLK_LSHIFT ; 
+
+    if (P->keystate[right]){
+        P->desacceleration=0;
+        P->acc+=0.008;
+        if(P->acc>=0.1)
+            P->acc=0.1;
+        P->derec=1;
+        if(P->keystate[up]) {
+            if (P->jumt == 0)
+            {
+                P->jumt=1;
+                P->i=-50;
+                P->y=P->img.pos1.y;
+            
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 8;
+            }
+    }
+    
+    }
+    else if (P->keystate[left]){
+        P->desacceleration=0;
+        P->acc+=0.008;
+        if(P->acc>=0.1)
+            P->acc=0.1;
+        P->derec=2;
+        if(P->keystate[up]) {
+            if (P->jumt == 0)
+            {
+                P->jumt=1;
+                P->i=-50;
+                P->y=P->img.pos1.y;
+            
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 8;
+            }
+    }
+    }
+    else if(P->keystate[up]) {
+        if (P->jumt == 0)
+        {
+                P->jumt=1;
+                P->i=-50;
+                P->y=P->img.pos1.y;
+            
+                P->img.pos2.x=P->img.img->w - (P->img.img->w/11) * 8; 
+        }
+    }
+    else    {
+        P->desacceleration=1;
+    }
+
+     
+
+
+
+
+
+/*
+switch ( event )
+{
+    case 1 : //SDLK_RIGHT
+        P->desacceleration=0;
+        P->acc+=0.008;
+        if(P->acc>=0.1)
+            P->acc=0.1;
+        P->derec=1;
+    break ; 
+
+    case 2 : //SDLK_LEFT
+        P->desacceleration=0;
+        P->acc+=0.008;
+        if(P->acc>=0.1)
+            P->acc=0.1;
+        P->derec=2;
+    break ; 
+
+    case 3 : //SDLK_SPACE
+    if (P->jumt == 0)
+    {
+        P->jumt=1;
+        P->i=-50;
+       P->y=P->img.pos1.y;
+       
+        P->img.pos2.x=0; 
+    }
+        
+    break ; 
+
+    case 4 : 
+        P->desacceleration=1;
+    break ; 
+}
+*/
+
+
+
+    }

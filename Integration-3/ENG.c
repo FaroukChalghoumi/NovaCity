@@ -23,7 +23,7 @@ int enigmeFuul()
     screen = SDL_SetVideoMode(1280, 720, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_WM_SetCaption("ENIGME-MED", NULL); 
     
-	bg=IMG_Load("Assets/stages/backgtest.png");
+	bg=IMG_Load("Assets/stages/backMeta.jpg");
 	bgpos.x=0;
 	bgpos.y=0;
 
@@ -38,7 +38,8 @@ int enigmeFuul()
     heropos.w=200;
     heropos.h=200;
 
-hero = IMG_Load("Assets/hero/hero_test.png");
+//hero = IMG_Load("Assets/hero/hero_test.png");
+hero = IMG_Load("testcar.png");
 SDL_Rect poschoix;
 poschoix.x=600;
 poschoix.y=400;

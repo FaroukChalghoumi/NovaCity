@@ -17,6 +17,8 @@ typedef struct
 	int anim;
 	SDL_Surface *anima[10]; 
 	SDL_Surface *animFeu[15]; 
+	SDL_Surface *VirusMariem [5];
+	SDL_Rect posvirus;
 	SDL_Rect posanimFeu[10];
 	SDL_Rect posanim ;
 	
@@ -50,6 +52,6 @@ void freeBackground(Background *B);
 //void saveScore(scoreInfo s, char *fileName);
 
 void loadStage2Background(Background *B  );
-
+void afficherVirus (int nbPower , Background B , SDL_Surface *screen);
 
 #endif

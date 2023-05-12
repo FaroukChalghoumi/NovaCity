@@ -21,7 +21,11 @@ void initBackground(Background *B)
 	B->posanim.y = 100;
 	B->numAnnim1 = 0;
 	B->numAnnim2 = 0;
+
 	
+	B->posvirus.x = 200 ; 
+	B->posvirus.y = 100 ; 
+
 	B->anim =0;
 	B->posanimFeu[0].x = 100 ; 
 	B->posanimFeu[0].y = 500 ; 
@@ -39,6 +43,14 @@ char ch2[20];
 		B->animFeu[i] = IMG_Load(ch2);
 	}
 
+	char ch3[20];
+	for(i=0;i<4;i++)
+	{
+		sprintf(ch3,"health%d.png",i+1);
+		B->VirusMariem[i] = IMG_Load(ch3);
+	}
+
+
 	if(SDL_Init(SDL_INIT_AUDIO)==-1)
 	{
 		printf("SDL_Init: %s\n", SDL_GetError());
@@ -54,7 +66,7 @@ char ch2[20];
 
 }
 
-void afficherBack (Background B,SDL_Surface *screen)
+void afficherBack (Background B,SDL_Surface *screen )
 {
 	SDL_BlitSurface(B.BgImg,&(B.camera),screen,&(B.PositionBg));
 	SDL_BlitSurface(B.anima[B.numAnnim1],NULL,screen,&(B.posanim));
@@ -323,5 +335,9 @@ void loadStage2Background(Background *B )
 				B->BgImg= IMG_Load("background_stage2BIG.png");///fefe
 
 	
+}
+
+void afficherVirus (int nbPower , Background B , SDL_Surface *screen){
+	SDL_BlitSurface(B.VirusMariem[nbPower],NULL,screen,&B.posvirus);
 }
 

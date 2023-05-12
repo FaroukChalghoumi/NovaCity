@@ -38,7 +38,7 @@ void deplacerPerso(Perso *P,int dt);
 void saut(Perso *P);
 //Integration 
 //void MajPerso (Perso* P , int event );
-void MajPerso (Perso* P , int event );
+void MajPerso (Perso* P );
 void UpdatePerso   (Perso* P);
 
 void libererperso(Perso* p);
@@ -46,6 +46,8 @@ void libererperso(Perso* p);
 
 
 void loadStage2Perso(Perso *P );
+void initPersoMultiplayer(Perso *P , char *ImagePath , SDL_Rect pos);
+void MajPerso2 (Perso* P );
 
 
 #endif
