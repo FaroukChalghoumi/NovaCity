@@ -53,23 +53,6 @@ int main()
 
 
 int multiplayer = -1 ; 
-Perso P1;
-Perso P2;
-
-    SDL_Rect pos ; 
-    pos.x = 50;
-    pos.y = 490 ; 
-    
-    initPersoMultiplayer(&P1,"spritesheet_voiture_rouge.png",pos);
-    
-    pos.x = 50+490;
-    initPersoMultiplayer(&P2,"spritesheet_car.png",pos);
-
-if (multiplayer == 1){
-    B.camera.w /= 2 ;
-    B2.camera.w /= 2 ;
-    B2.PositionBg.x = 505; 
-}
 
 
 SDL_Surface *test =  IMG_Load("health2.png");
@@ -84,17 +67,28 @@ posTest.y = 100 ;
 
     int stage = 1 ; 
  multiplayer = menuAlll() ;
+ Perso P1;
+Perso P2;
+    SDL_Rect pos ; 
+    pos.x = 50;
+    pos.y = 500; 
+    
+    initPersoMultiplayer(&P1,"spritesheet_voiture_rouge.png",pos);
+    
+    pos.x = 50+490;
+    initPersoMultiplayer(&P2,"spritesheet_car.png",pos);
 
-//INIT ARDUINOOOOOOO
-
-char buffer[100];                   // un buffer
-    int i;
-
-    // ouverture du port à 9600 bauds
-    int fd = serialport_init("/dev/ttyUSB0", 9600);
-    if (fd==-1) return -1;
-
- 
+if (multiplayer){
+    B.camera.w /= 2 ;
+    B2.camera.w /= 2 ;
+    B2.PositionBg.x = 505; 
+}
+ screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+  /*INIT ARDUINOOOOOOO;
+   char buffer[100];
+   int i;
+   int fd=serialport_init("/dev/ttyUSB0",9600);
+   if(fd==-1) return -1;*/
 	
     //SDL_EnableKeyRepeat(100,10);
     
@@ -102,7 +96,7 @@ char buffer[100];                   // un buffer
     {   //printf("\ny= %f",personnage.distance);
        // multiplayer = AllMenu(&menu,screen,event);
        // multiplayer = menuAlll() ;
-       screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+      // screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
        
     if (multiplayer == 0)
     {
@@ -209,6 +203,7 @@ char buffer[100];                   // un buffer
                                 loadStage2MiniMap(&m);
                                 loadStage2Perso(&personnage);
                             }
+                            else continuer = 0 ; 
                             screen=SDL_SetVideoMode (1000,666,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
                             nbEnnemie = 0 ; 
@@ -256,7 +251,7 @@ char buffer[100];                   // un buffer
         afficher_entite(&collectPower ,screen);
                 animePerso(&personnage);
 
-                //MAJMinimap(personnage.img.pos1,  &m, B.camera, 20);
+                MAJMinimap(personnage.img.pos1,  &m, B.camera, 4);
 
                 if (collisionparfaite(screen,personnage) != 10)
                 {
@@ -303,8 +298,8 @@ char buffer[100];                   // un buffer
                     MajPerso2(&P2);
                     UpdatePerso(&P1 ) ; 
                     UpdatePerso(&P2 ) ; 
-                    deplacerPerso(&P1,5); 
-                         deplacerPerso(&P2,5);
+                    deplacerPerso(&P1,0); 
+                         deplacerPerso(&P2,0);
                          scrollingInt(&B,P1);
                          scrollingInt(&B2,P2);
 
@@ -314,8 +309,9 @@ char buffer[100];                   // un buffer
                  animePerso(&P2);
                  SDL_Flip(screen);
 
+
             }
-        printf("\nmulti= %d",multiplayer);
+        //printf("\nmulti= %d",multiplayer);
 }
 
 printf("\ncontinuer= %d",continuer);

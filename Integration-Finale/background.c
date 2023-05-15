@@ -18,7 +18,7 @@ void initBackground(Background *B)
 	B->BgImg= IMG_Load("ob4.png");
 	B->Time = 0 ; //annimation Background
 	B->posanim.x = 50;
-	B->posanim.y = 100;
+	B->posanim.y = 50;
 	B->numAnnim1 = 0;
 	B->numAnnim2 = 0;
 

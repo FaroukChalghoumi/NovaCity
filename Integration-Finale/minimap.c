@@ -4,15 +4,15 @@
 void init_map (minimap *m)
 { 
 	m -> map = IMG_Load("minimap.png");
-	m->positionmap.x =350;
-  	m->positionmap.y =80;
+	m->positionmap.x =3;
+  	m->positionmap.y =20;
 
 
 
   
-  m-> minijoueur = IMG_Load("playermap.png");
-  m->positionminijoueur.x =250;
-  m->positionminijoueur.y =100;
+  m-> minijoueur = IMG_Load("testcar(1).png");
+  m->positionminijoueur.x =10;
+  m->positionminijoueur.y =45;
 
  //annimation 1 MiniMap
   char ch2[20];
@@ -22,8 +22,8 @@ void init_map (minimap *m)
 		sprintf(ch2,"Cadre/cadre%d.png",i+1);
 		m->animMiniMap1[i] = IMG_Load(ch2);
 	}
-m->PosanimMiniMap1.x = 347 ;
-m->PosanimMiniMap1.y = 70 ; 
+m->PosanimMiniMap1.x = 0 ;
+m->PosanimMiniMap1.y = 10; 
   m->GloablFrame = 0;
   m->numCadre = 0 ; 
 
@@ -36,8 +36,8 @@ void MAJMinimap(SDL_Rect posJoueur,  minimap *m, SDL_Rect camera, int redimensio
   posJoueurABS.y = 0;
   posJoueurABS.x = posJoueur.x + camera.x;
   posJoueurABS.y = posJoueur.y + camera.y;
-  m->positionminijoueur.x=(posJoueurABS.x * redimensionnement/100)+250;
-  m->positionminijoueur.y=(posJoueurABS.y * redimensionnement/100)+95;
+  m->positionminijoueur.x=(posJoueurABS.x * redimensionnement/100)+10;
+  m->positionminijoueur.y=(posJoueurABS.y * redimensionnement/100)+45;
 }
 
 
@@ -86,7 +86,7 @@ void affichertemp(int *temps, SDL_Surface *screen, TTF_Font *police)
     char texteChrono[10] = "";
 
     positionChrono.x = 40;
-    positionChrono.y = 50;
+    positionChrono.y = 170;
     (*temps) = SDL_GetTicks();
     (*temps) /= 1000;
 
